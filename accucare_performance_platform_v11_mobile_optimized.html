@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#342566">
+<title>Accucare Performance Monitoring Platform</title>
+<!-- v11 mobile-optimized build -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto:wght@500;600;700&display=swap');
+:root{
+  --bg:#f6f7fb;
+  --surface:#ffffff;
+  --surface-soft:#fbfbfe;
+  --ink:#171724;
+  --ink-2:#35354b;
+  --muted:#67677c;
+  --muted-2:#8b8b9d;
+  --primary:#5b3dbb;
+  --primary-600:#5035aa;
+  --primary-100:#eee9ff;
+  --blue:#2f80ed;
+  --blue-100:#eaf3ff;
+  --green:#15916d;
+  --green-100:#e9f7f1;
+  --amber:#d9891b;
+  --amber-100:#fff5e5;
+  --red:#c94c4c;
+  --red-100:#fff0f0;
+  --line:#e9e8f1;
+  --line-strong:#dddbea;
+  --shadow-sm:0 4px 14px rgba(37,32,74,.05);
+  --shadow-md:0 14px 34px rgba(37,32,74,.08);
+  --shadow-lg:0 22px 55px rgba(37,32,74,.10);
+  --radius-sm:10px;
+  --radius:16px;
+  --radius-lg:22px;
+  --sidebar:#2c215a;
+  --sidebar-2:#463080;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Open Sans","Segoe UI",Arial,sans-serif;
+  font-size:14.5px;
+  line-height:1.55;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(91,61,187,.08), transparent 28%),
+    linear-gradient(180deg,#fafafe 0%,var(--bg) 34%,var(--bg) 100%);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility
+}
+button,input,select,textarea{font:inherit}
+.app{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100vh}
+
+aside{
+  position:sticky;top:0;height:100vh;
+  padding:24px 18px 22px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 20% 8%, rgba(77,164,255,.26), transparent 24%),
+    linear-gradient(165deg,var(--sidebar) 0%,#342566 42%,var(--sidebar-2) 100%);
+  border-right:1px solid rgba(255,255,255,.08);
+  box-shadow:16px 0 45px rgba(36,27,72,.08)
+}
+.brand{display:flex;gap:12px;align-items:center;padding:4px 6px 18px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.10)}
+.brandmark{
+  width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+  font-size:18px;font-weight:800;letter-spacing:-.4px;
+  background:linear-gradient(145deg,#71b7ff 0%,#4e8ff1 35%,#8262df 100%);
+  box-shadow:0 10px 24px rgba(42,119,218,.28), inset 0 1px 0 rgba(255,255,255,.30)
+}
+.brand h1{margin:0;font-family:"Roboto","Open Sans",sans-serif;font-size:15px;font-weight:800;letter-spacing:1.15px}
+.brand p{margin:3px 0 0;font-size:11px;color:#d8d1f2;font-weight:500}
+nav{padding-top:4px}
+nav button{
+  width:100%;border:0;background:transparent;color:#d7d0eb;
+  border-radius:12px;padding:11px 12px;text-align:left;font-size:13px;font-weight:650;
+  margin:4px 0;cursor:pointer;transition:.18s ease;
+  border:1px solid transparent
+}
+nav button:hover{
+  color:#fff;background:rgba(255,255,255,.08);
+  transform:translateX(2px)
+}
+nav button.active{
+  color:#fff;
+  background:linear-gradient(90deg,rgba(255,255,255,.14),rgba(255,255,255,.08));
+  border-color:rgba(255,255,255,.10);
+  box-shadow:inset 3px 0 0 #8fc6ff,0 8px 20px rgba(21,14,52,.12)
+}
+.side-note{
+  position:absolute;bottom:20px;left:18px;right:18px;
+  padding:14px 14px 13px;border-radius:14px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);
+  color:#cfc7e7;font-size:11px;line-height:1.55
+}
+.side-note b{font-weight:750}
+
+main{padding:0 34px 44px;min-width:0}
+main::before{
+  content:"Accucare Management Intelligence";
+  display:flex;align-items:center;
+  margin:0 -34px 28px;padding:11px 34px;
+  background:rgba(255,255,255,.82);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(10px);
+  color:var(--primary);
+  font-size:11px;font-weight:800;letter-spacing:.75px;text-transform:uppercase
+}
+.tab{display:none}
+.tab.active{display:block;animation:fadeIn .22s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}
+h2{
+  margin:0;color:var(--ink);font-family:"Roboto","Open Sans",sans-serif;font-size:29px;line-height:1.15;font-weight:800;
+  letter-spacing:-.8px
+}
+.topbar p{
+  margin:7px 0 0;max-width:820px;color:var(--muted);
+  font-size:13.5px;line-height:1.6
+}
+.pill{
+  flex:none;background:rgba(255,255,255,.88);border:1px solid var(--line);
+  border-radius:999px;padding:9px 13px;color:var(--ink-2);font-size:11px;font-weight:650;
+  box-shadow:var(--shadow-sm)
+}
+
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.kpi,.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm)
+}
+.kpi{
+  min-height:132px;padding:18px 18px 17px;position:relative;overflow:hidden;
+  transition:.2s ease
+}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--primary),var(--blue))
+}
+.kpi::after{
+  content:"";position:absolute;width:88px;height:88px;border-radius:50%;
+  right:-28px;top:-34px;background:radial-gradient(circle,rgba(91,61,187,.10),rgba(91,61,187,0))
+}
+.label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.72px;
+  color:var(--muted);font-weight:800
+}
+.value{
+  margin-top:10px;color:var(--ink);font-family:"Roboto","Open Sans",sans-serif;font-size:30px;line-height:1;
+  font-weight:800;letter-spacing:-.7px;font-variant-numeric:tabular-nums
+}
+.delta{font-size:11px;margin-top:9px;font-weight:650}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.neutral{color:var(--muted)}
+
+.card{padding:19px;transition:.18s ease}
+.card:hover{box-shadow:var(--shadow-md)}
+.card h3{
+  margin:0;color:var(--ink-2);font-family:"Roboto","Open Sans",sans-serif;font-size:14px;line-height:1.25;
+  font-weight:800;letter-spacing:-.15px
+}
+.sub{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+.section-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:18px}
+canvas{width:100%;height:275px;display:block;margin-top:6px}
+
+.score-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:13px}
+.score{
+  min-height:92px;padding:14px 14px 13px;border:1px solid var(--line);
+  border-radius:14px;background:linear-gradient(180deg,#fff,#fcfbff)
+}
+.score b{font-size:11.5px;color:var(--muted);font-weight:750}
+.score .big{
+  margin-top:7px;color:var(--ink);font-family:"Roboto","Open Sans",sans-serif;font-size:23px;line-height:1;
+  font-weight:800;letter-spacing:-.4px;font-variant-numeric:tabular-nums
+}
+.score .tiny{font-size:10px;color:var(--muted-2);margin-top:6px}
+
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+fieldset{
+  border:1px solid var(--line);background:rgba(255,255,255,.96);
+  border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm)
+}
+fieldset.full{grid-column:1/-1}
+legend{
+  padding:0 8px;color:#44396a;font-size:12px;font-weight:800;
+  letter-spacing:-.05px
+}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{
+  display:block;margin-bottom:6px;color:var(--muted);
+  font-size:10px;font-weight:750;letter-spacing:.1px
+}
+input,select,textarea{
+  width:100%;border:1px solid var(--line-strong);border-radius:11px;
+  padding:10px 11px;background:#fcfcff;color:var(--ink);
+  font-size:12px;outline:none;transition:.16s ease
+}
+input:hover,select:hover,textarea:hover{border-color:#cec9e4;background:#fff}
+input:focus,select:focus,textarea:focus{
+  background:#fff;border-color:#8a72d8;
+  box-shadow:0 0 0 4px rgba(91,61,187,.08)
+}
+textarea{min-height:86px;resize:vertical;line-height:1.5}
+.section-title{
+  grid-column:1/-1;margin:7px 0 -4px;padding:7px 0 1px;
+  color:#4b426d;font-size:11px;font-weight:850;letter-spacing:.7px;text-transform:uppercase
+}
+.note{margin-top:7px;color:var(--muted-2);font-size:10px;line-height:1.45}
+.actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:9px;padding-top:2px}
+.btn{
+  border:0;border-radius:11px;padding:9px 14px;font-size:12px;font-weight:800;
+  cursor:pointer;transition:.17s ease
+}
+.btn.primary{
+  color:#fff;background:linear-gradient(135deg,var(--primary),#684bc6);
+  box-shadow:0 8px 18px rgba(91,61,187,.18)
+}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 11px 22px rgba(91,61,187,.23)}
+.btn.secondary{background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+.btn.secondary:hover{background:#faf9fe;border-color:#d8d4e8}
+
+.insight{
+  position:relative;margin-top:10px;padding:12px 13px 12px 15px;
+  border:1px solid var(--line);border-radius:13px;
+  background:linear-gradient(180deg,#fdfcff,#faf9ff)
+}
+.insight::before{
+  content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,var(--primary),var(--blue))
+}
+.insight b{font-size:11px;color:var(--ink-2);font-weight:800}
+.insight p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+
+table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  font-size:11px;background:#fff;border:1px solid var(--line);
+  border-radius:13px;overflow:hidden
+}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th{
+  background:#faf9fd;color:var(--muted);font-size:9px;
+  text-transform:uppercase;letter-spacing:.62px;font-weight:850
+}
+tbody tr:hover td{background:#fcfbff}
+.badge{
+  display:inline-flex;align-items:center;background:var(--primary-100);color:var(--primary);
+  border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800
+}
+.toast{
+  position:fixed;right:24px;bottom:24px;z-index:20;
+  background:#2d2359;color:#fff;padding:11px 15px;border-radius:12px;
+  box-shadow:var(--shadow-lg);opacity:0;transform:translateY(8px);
+  transition:.2s;font-size:11px;font-weight:700;pointer-events:none
+}
+.toast.show{opacity:1;transform:none}
+
+/* Subtle scrollbar refinement */
+*{scrollbar-width:thin;scrollbar-color:#cbc7dd transparent}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#cbc7dd;border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+
+/* Responsive */
+@media(max-width:1120px){
+  .grid4,.score-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .section-grid{grid-template-columns:1fr}
+}
+@media(max-width:800px){
+  .app{grid-template-columns:1fr}
+  aside{height:auto;position:relative;padding:14px}
+  .brand{margin-bottom:8px;padding-bottom:12px}
+  nav{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
+  nav button{width:auto;white-space:nowrap;margin:0}
+  .side-note{display:none}
+  main{padding:0 14px 30px}
+  main::before{margin:0 -14px 20px;padding:9px 14px}
+  .topbar{flex-direction:column;margin-bottom:18px}
+  h2{font-size:25px}
+  .grid4,.grid3,.score-grid{grid-template-columns:1fr 1fr}
+  form{grid-template-columns:1fr}
+  .fields{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .grid4,.grid3,.score-grid{grid-template-columns:1fr}
+  .kpi{min-height:112px}
+}
+
+/* Department visual identity system */
+.dept-strip{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 4px;
+}
+.dept-chip{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 13px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#fff;
+  box-shadow:var(--shadow-sm);
+  min-width:0;
+  transition:.18s ease;
+}
+.dept-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.dept-icon{
+  width:36px;height:36px;border-radius:11px;
+  display:grid;place-items:center;
+  font-size:17px;font-weight:800;
+  flex:none;
+}
+.dept-copy{min-width:0}
+.dept-copy b{display:block;font-family:"Roboto","Open Sans",sans-serif;font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dept-copy span{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+
+/* Distinct but harmonized department colors */
+.dept-opd .dept-icon{background:#eaf3ff;color:#2f80ed}
+.dept-pharmacy .dept-icon{background:#eef8f4;color:#15916d}
+.dept-lab .dept-icon{background:#f3edff;color:#7a4fc7}
+.dept-nursing .dept-icon{background:#fff2f6;color:#c84f7a}
+.dept-mch .dept-icon{background:#fff6e8;color:#d9891b}
+.dept-home .dept-icon{background:#edf8fb;color:#2d8ea5}
+.dept-physio .dept-icon{background:#eef7ff;color:#2477b9}
+.dept-optical .dept-icon{background:#f1f5ff;color:#5368c7}
+.dept-radiology .dept-icon{background:#eef3f7;color:#526a7b}
+
+.dept-card{
+  position:relative;
+  overflow:hidden;
+}
+.dept-card::before{
+  content:"";
+  position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--dept-color,#5b3dbb);
+}
+.dept-card .dept-card-head{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px
+}
+.dept-card .dept-mini-icon{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:var(--dept-soft,#eee9ff);color:var(--dept-color,#5b3dbb);
+  font-size:16px;font-weight:800;flex:none
+}
+.dept-card .dept-title-wrap b{display:block;font-family:"Roboto","Open Sans",sans-serif;font-size:12px;color:var(--ink-2)}
+.dept-card .dept-title-wrap span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+
+.dept-opd-card{--dept-color:#2f80ed;--dept-soft:#eaf3ff}
+.dept-pharmacy-card{--dept-color:#15916d;--dept-soft:#eef8f4}
+.dept-lab-card{--dept-color:#7a4fc7;--dept-soft:#f3edff}
+.dept-nursing-card{--dept-color:#c84f7a;--dept-soft:#fff2f6}
+.dept-mch-card{--dept-color:#d9891b;--dept-soft:#fff6e8}
+.dept-home-card{--dept-color:#2d8ea5;--dept-soft:#edf8fb}
+.dept-physio-card{--dept-color:#2477b9;--dept-soft:#eef7ff}
+.dept-optical-card{--dept-color:#5368c7;--dept-soft:#f1f5ff}
+.dept-radiology-card{--dept-color:#526a7b;--dept-soft:#eef3f7}
+
+.dept-legend{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:10px
+}
+.dept-legend span{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;color:var(--muted);font-weight:650
+}
+.dept-legend i{
+  width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--c)
+}
+
+@media(max-width:1180px){.dept-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.dept-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.dept-strip{grid-template-columns:1fr}}
+
+
+/* KPI target / status system */
+.status-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+.status-card{
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#fff;
+  padding:14px 14px 13px 15px;
+  min-height:106px;
+  box-shadow:var(--shadow-sm);
+}
+.status-card::before{
+  content:"";
+  position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 4px 4px 0;
+  background:var(--status,#9b9bad)
+}
+.status-card.green{--status:#15916d;background:linear-gradient(180deg,#fff,#fbfffd)}
+.status-card.amber{--status:#d9891b;background:linear-gradient(180deg,#fff,#fffdfa)}
+.status-card.red{--status:#c94c4c;background:linear-gradient(180deg,#fff,#fffafa)}
+.status-card.grey{--status:#9b9bad}
+.status-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.status-title{font:700 11px "Roboto","Open Sans",sans-serif;color:var(--ink-2)}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--status,#9b9bad);box-shadow:0 0 0 4px color-mix(in srgb,var(--status,#9b9bad) 12%,transparent)}
+.status-value{font:800 23px "Roboto","Open Sans",sans-serif;color:var(--ink);margin-top:8px}
+.status-target{font-size:9.5px;color:var(--muted);margin-top:4px}
+.status-text{font-size:9.5px;font-weight:700;margin-top:5px;color:var(--status,#77778b)}
+
+.target-table input,.target-table select{min-width:95px;padding:7px 8px;font-size:11px}
+.target-table td,.target-table th{vertical-align:middle}
+.target-note{
+  padding:11px 13px;border:1px solid #e7e2f7;border-radius:12px;
+  background:#faf8ff;color:var(--muted);font-size:10.5px;line-height:1.5;margin-bottom:14px
+}
+
+/* Workflow / approvals */
+.workflow-bar{
+  display:flex;gap:9px;align-items:center;flex-wrap:wrap;
+  padding:12px 14px;margin-bottom:16px;border:1px solid var(--line);
+  border-radius:14px;background:#fff;box-shadow:var(--shadow-sm)
+}
+.role-select{width:auto;min-width:180px}
+.workflow-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:999px;padding:6px 9px;font-size:10px;font-weight:800
+}
+.workflow-badge.draft{background:#f1f1f5;color:#68687a}
+.workflow-badge.submitted{background:#fff5e5;color:#b26e0f}
+.workflow-badge.approved{background:#e9f7f1;color:#127a5c}
+.workflow-badge.rejected{background:#fff0f0;color:#b33d3d}
+.approval-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.audit-list{display:grid;gap:8px;margin-top:12px}
+.audit-item{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fcfbff;font-size:10.5px;color:var(--muted)}
+.audit-item b{color:var(--ink-2)}
+@media(max-width:1120px){.status-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.status-grid{grid-template-columns:1fr}}
+
+
+/* Department KPI targets */
+.dept-target-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:14px;
+}
+.dept-target-box{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px;
+  background:#fff;
+  box-shadow:var(--shadow-sm);
+}
+.dept-target-box h4{
+  margin:0 0 10px;
+  font:700 12px "Roboto","Open Sans",sans-serif;
+  color:var(--ink-2)
+}
+.dept-target-row{
+  display:grid;
+  grid-template-columns:1fr 92px 78px;
+  gap:8px;
+  align-items:center;
+  margin:8px 0
+}
+.dept-target-row span{font-size:10px;color:var(--muted)}
+.dept-target-row input{padding:7px 8px;font-size:10.5px}
+.dept-kpi-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px
+}
+.dept-mini-status{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  background:#fcfcff
+}
+.dept-mini-status b{display:block;font-size:10px;color:var(--ink-2)}
+.dept-mini-status span{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.dept-mini-status.green{border-left:4px solid #15916d}
+.dept-mini-status.amber{border-left:4px solid #d9891b}
+.dept-mini-status.red{border-left:4px solid #c94c4c}
+.dept-mini-status.grey{border-left:4px solid #9b9bad}
+
+/* Printable monthly management report */
+.report-toolbar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin-bottom:16px
+}
+.report-sheet{
+  background:#fff;border:1px solid var(--line);
+  border-radius:18px;padding:24px;
+  box-shadow:var(--shadow-sm)
+}
+.report-head{
+  display:flex;justify-content:space-between;gap:20px;
+  padding-bottom:16px;border-bottom:2px solid #eeeaf8
+}
+.report-brand h3{
+  margin:0;font:800 18px "Roboto","Open Sans",sans-serif;
+  letter-spacing:.4px;color:#3d2d75
+}
+.report-brand p,.report-meta{margin:4px 0 0;color:var(--muted);font-size:10.5px}
+.report-section{margin-top:20px}
+.report-section h4{
+  margin:0 0 10px;font:700 12px "Roboto","Open Sans",sans-serif;color:#33285c
+}
+.report-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px
+}
+.report-metric{
+  border:1px solid var(--line);border-radius:12px;padding:11px;background:#fcfbff
+}
+.report-metric b{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.report-metric strong{display:block;margin-top:5px;font:700 16px "Roboto","Open Sans",sans-serif;color:var(--ink)}
+.report-table{margin-top:8px}
+.report-insight{
+  padding:10px 12px;border-radius:10px;background:#faf8ff;border:1px solid #e8e2f5;
+  font-size:10.5px;color:var(--ink-2);margin:7px 0
+}
+.report-footer{
+  display:flex;justify-content:space-between;gap:20px;margin-top:26px;
+  padding-top:14px;border-top:1px solid var(--line);
+  font-size:9px;color:var(--muted)
+}
+.print-only{display:none}
+
+@media(max-width:1000px){
+  .dept-target-grid{grid-template-columns:1fr 1fr}
+  .report-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .dept-target-grid,.report-grid{grid-template-columns:1fr}
+  .dept-target-row{grid-template-columns:1fr 88px 70px}
+}
+@media print{
+  body{background:#fff!important;color:#111!important}
+  aside,main::before,nav,.topbar,.report-toolbar,.toast,.no-print{display:none!important}
+  .app{display:block!important}
+  main{padding:0!important}
+  .tab{display:none!important}
+  #reports.tab{display:block!important}
+  #reports .topbar{display:none!important}
+  .report-sheet{
+    display:block!important;border:0!important;border-radius:0!important;
+    box-shadow:none!important;padding:8mm!important
+  }
+  .report-grid{grid-template-columns:repeat(4,1fr)!important}
+  .report-metric,.report-table,.report-insight{break-inside:avoid}
+  .print-only{display:block}
+  @page{size:A4 portrait;margin:10mm}
+}
+
+
+/* Department one-page printable scorecards */
+.scorecard-toolbar{
+  display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:16px
+}
+.dept-scorecard-sheet{
+  background:#fff;border:1px solid var(--line);border-radius:18px;
+  padding:22px;box-shadow:var(--shadow-sm);min-height:900px
+}
+.dsc-head{
+  display:flex;justify-content:space-between;gap:20px;align-items:flex-start;
+  padding-bottom:14px;border-bottom:2px solid #eeeaf8
+}
+.dsc-brand h3{
+  margin:0;font:800 17px "Roboto","Open Sans",sans-serif;color:#392a70;letter-spacing:.2px
+}
+.dsc-brand p{margin:4px 0 0;color:var(--muted);font-size:10.5px}
+.dsc-meta{text-align:right;font-size:10px;color:var(--muted)}
+.dsc-title{
+  display:flex;align-items:center;gap:10px;margin-top:16px
+}
+.dsc-title-icon{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:var(--dept-soft,#eee9ff);color:var(--dept-color,#5b3dbb);
+  font-size:20px;font-weight:800
+}
+.dsc-title h2{font-size:22px;margin:0}
+.dsc-title p{margin:2px 0 0;color:var(--muted);font-size:10.5px}
+.dsc-kpis{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px
+}
+.dsc-kpi{
+  border:1px solid var(--line);border-radius:13px;padding:12px;background:#fcfbff
+}
+.dsc-kpi .k{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:800}
+.dsc-kpi .v{font:800 20px "Roboto","Open Sans",sans-serif;margin-top:4px;color:var(--ink)}
+.dsc-kpi .t{font-size:9.5px;color:var(--muted);margin-top:4px}
+.dsc-status-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px
+}
+.dsc-status{
+  border-radius:13px;border:1px solid var(--line);padding:11px 12px;position:relative
+}
+.dsc-status.green{border-left:5px solid #15916d;background:#fbfffd}
+.dsc-status.amber{border-left:5px solid #d9891b;background:#fffdfa}
+.dsc-status.red{border-left:5px solid #c94c4c;background:#fffafa}
+.dsc-status.grey{border-left:5px solid #9b9bad;background:#fcfcfd}
+.dsc-status b{font-size:10px;color:var(--ink-2)}
+.dsc-status strong{display:block;font:800 17px "Roboto","Open Sans",sans-serif;margin-top:4px}
+.dsc-status span{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.dsc-body{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:16px
+}
+.dsc-panel{
+  border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff
+}
+.dsc-panel h4{
+  margin:0 0 8px;font:700 11px "Roboto","Open Sans",sans-serif;color:#33285c
+}
+.dsc-panel canvas{height:220px!important}
+.action-table textarea{
+  min-height:48px;padding:7px 8px;font-size:9.5px
+}
+.action-table input,.action-table select{padding:7px 8px;font-size:9.5px}
+.action-table td,.action-table th{white-space:normal;vertical-align:top}
+.dsc-footer{
+  margin-top:14px;padding-top:10px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;font-size:8.5px;color:var(--muted)
+}
+@media(max-width:900px){
+  .dsc-body{grid-template-columns:1fr}
+  .dsc-kpis,.dsc-status-grid{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:580px){
+  .dsc-kpis,.dsc-status-grid{grid-template-columns:1fr}
+}
+@media print{
+  #deptscorecards.tab{display:block!important}
+  #reports.tab{display:none!important}
+  #deptscorecards .topbar,.scorecard-toolbar{display:none!important}
+  .dept-scorecard-sheet{
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    padding:4mm!important;min-height:auto!important
+  }
+  .dsc-panel,.dsc-kpi,.dsc-status{break-inside:avoid}
+  .dsc-body{grid-template-columns:1.15fr .85fr!important}
+  .dsc-kpis,.dsc-status-grid{grid-template-columns:repeat(3,1fr)!important}
+  .dsc-panel canvas{height:185px!important}
+  .action-table textarea{border:0!important;box-shadow:none!important;background:transparent!important;resize:none}
+  .action-table input,.action-table select{border:0!important;background:transparent!important}
+  @page{size:A4 portrait;margin:8mm}
+}
+
+
+/* Department-scoped login and data-entry */
+.login-shell{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(91,61,187,.13),transparent 26%),
+    radial-gradient(circle at 85% 85%,rgba(47,128,237,.10),transparent 28%),
+    #f7f8fc;
+}
+.login-card{
+  width:min(470px,100%);
+  background:#fff;border:1px solid var(--line);
+  border-radius:24px;padding:28px;
+  box-shadow:0 24px 70px rgba(41,31,82,.16)
+}
+.login-brand{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px
+}
+.login-brand-mark{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+  color:#fff;font:800 18px "Roboto","Open Sans",sans-serif;
+  background:linear-gradient(135deg,#2f80ed,#5b3dbb)
+}
+.login-card h2{
+  margin:0;font:800 24px "Roboto","Open Sans",sans-serif;color:var(--ink)
+}
+.login-card p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
+.login-fields{display:grid;gap:13px;margin-top:20px}
+.login-fields select,.login-fields input{font-size:13px;padding:11px 12px}
+.login-note{
+  margin-top:14px;padding:10px 12px;border-radius:11px;
+  background:#faf8ff;border:1px solid #ebe5f9;
+  font-size:10px;color:var(--muted);line-height:1.5
+}
+
+.session-card{
+  margin:8px 12px 14px;padding:11px 12px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.07);
+  color:#fff
+}
+.session-card .slabel{
+  font-size:8px;text-transform:uppercase;letter-spacing:.7px;
+  opacity:.68;font-weight:700
+}
+.session-card .svalue{
+  margin-top:3px;font:700 11px "Roboto","Open Sans",sans-serif
+}
+.session-card .srole{
+  margin-top:2px;font-size:9px;opacity:.78
+}
+.session-card button{
+  width:100%;margin-top:9px;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:#fff;
+  border-radius:9px;padding:7px;font-size:9px;cursor:pointer
+}
+
+.entry-scope-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  border:1px solid var(--line);border-radius:14px;background:#fff;
+  padding:12px 14px;margin-bottom:15px;box-shadow:var(--shadow-sm)
+}
+.entry-scope-left{display:flex;align-items:center;gap:10px}
+.entry-scope-icon{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:var(--primary-100);color:var(--primary);font-size:18px
+}
+.entry-scope-left b{display:block;font-size:12px;color:var(--ink-2)}
+.entry-scope-left span{display:block;font-size:9.5px;color:var(--muted);margin-top:2px}
+.entry-scope-badge{
+  font-size:9px;font-weight:800;border-radius:999px;padding:6px 9px;
+  background:#eef8f4;color:#157b5f
+}
+
+.department-form{
+  display:none
+}
+.department-form.active{
+  display:block
+}
+.department-form .form-intro{
+  display:flex;align-items:center;gap:10px;margin-bottom:13px;
+  padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:#fcfbff
+}
+.department-form .form-intro .ficon{
+  width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  background:var(--dept-soft,#eee9ff);color:var(--dept-color,#5b3dbb);
+  font-size:17px
+}
+.department-form .form-intro b{font-size:12px;color:var(--ink-2)}
+.department-form .form-intro span{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+
+.admin-only.hidden-by-dept,.manager-only.hidden-by-dept{display:none!important}
+
+@media(max-width:620px){
+  .entry-scope-banner{align-items:flex-start;flex-direction:column}
+}
+
+
+/* Strict department data-entry isolation */
+#entry fieldset.department-form{display:none!important}
+#entry fieldset.department-form.active{display:block!important}
+#entry .scoped-section-title{display:none!important}
+#entry .scoped-section-title.active{display:block!important}
+#entry .dept-field[data-field-scope]{display:none!important}
+#entry .dept-field[data-field-scope].active{display:block!important}
+#entryForm > .actions{display:flex}
+body.department-session #entryForm fieldset:not(.department-form){display:none!important}
+body.department-session #entryForm .section-title:not(.scoped-section-title){display:none!important}
+
+
+/* CMS integration */
+.integration-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px
+}
+.integration-card{
+  border:1px solid var(--line);border-radius:16px;background:#fff;
+  padding:16px;box-shadow:var(--shadow-sm)
+}
+.integration-card h3{margin:0 0 4px}
+.integration-status{
+  display:flex;align-items:center;gap:8px;margin-top:12px;
+  padding:10px 12px;border-radius:11px;background:#f8f8fc;border:1px solid var(--line);
+  font-size:10.5px;color:var(--muted)
+}
+.integration-status .dot{width:9px;height:9px;border-radius:50%;background:#9b9bad}
+.integration-status.ok .dot{background:#15916d}
+.integration-status.warn .dot{background:#d9891b}
+.integration-status.bad .dot{background:#c94c4c}
+.mapping-table input,.mapping-table select{padding:7px 8px;font-size:10px}
+.mapping-table td,.mapping-table th{vertical-align:middle}
+.sync-summary{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px
+}
+.sync-stat{
+  border:1px solid var(--line);border-radius:12px;padding:11px;background:#fcfbff
+}
+.sync-stat b{display:block;font-size:9px;text-transform:uppercase;color:var(--muted)}
+.sync-stat strong{display:block;margin-top:5px;font:800 18px "Roboto","Open Sans",sans-serif;color:var(--ink)}
+.code-hint{
+  font-family:Consolas,monospace;font-size:9.5px;line-height:1.55;
+  background:#171724;color:#f1efff;padding:11px 12px;border-radius:11px;overflow:auto
+}
+@media(max-width:900px){.integration-grid{grid-template-columns:1fr}.sync-summary{grid-template-columns:1fr 1fr}}
+
+
+/* QA-hardened print routing: print only the section requested by the user. */
+@media print{
+  body.print-report #reports.tab{display:block!important}
+  body.print-report #deptscorecards.tab{display:none!important}
+  body.print-scorecard #reports.tab{display:none!important}
+  body.print-scorecard #deptscorecards.tab{display:block!important}
+  body.print-report .login-shell,body.print-scorecard .login-shell{display:none!important}
+}
+
+
+
+/* ==========================================================
+   v11 MOBILE OPTIMISATION LAYER
+   Keeps desktop/print behaviour intact while improving phones
+   and small tablets: touch targets, scrolling, forms, reports,
+   scorecards and data tables.
+   ========================================================== */
+@media screen and (max-width:800px){
+  html,body{max-width:100%;overflow-x:hidden}
+  body{-webkit-text-size-adjust:100%;text-size-adjust:100%;padding-bottom:env(safe-area-inset-bottom)}
+  .app{display:block;min-height:100dvh}
+
+  /* Compact sticky mobile header + horizontally scrollable navigation */
+  aside{
+    position:sticky;top:0;z-index:500;height:auto;width:100%;
+    padding:10px 10px 8px;
+    box-shadow:0 8px 24px rgba(36,27,72,.16)
+  }
+  .brand{padding:0 2px 8px;margin:0 0 6px;gap:9px}
+  .brandmark{width:38px;height:38px;border-radius:11px;font-size:14px;flex:none}
+  .brand h1{font-size:12px;letter-spacing:.8px}
+  .brand p{font-size:9px;margin-top:1px}
+  .session-card{
+    margin:0 0 7px;padding:7px 9px;border-radius:10px;
+    display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:center
+  }
+  .session-card .slabel{display:none}
+  .session-card .svalue{margin:0;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .session-card .srole{margin:1px 0 0;font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .session-card button{grid-column:2;grid-row:1/3;width:auto;margin:0;padding:6px 9px;min-height:32px}
+  nav{
+    display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:0 0 2px;
+    scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav button{
+    flex:0 0 auto;width:auto;min-height:42px;white-space:nowrap;margin:0;
+    padding:9px 12px;border-radius:10px;font-size:11.5px;touch-action:manipulation
+  }
+  nav button.active{box-shadow:inset 0 -3px 0 #8fc6ff,0 5px 14px rgba(21,14,52,.12)}
+  .side-note{display:none!important}
+
+  main{padding:0 12px 28px;min-width:0}
+  main::before{margin:0 -12px 16px;padding:8px 12px;font-size:9px;letter-spacing:.55px}
+  .topbar{gap:10px;margin-bottom:15px}
+  h2{font-size:23px;line-height:1.15;letter-spacing:-.45px}
+  .topbar p{font-size:12px;line-height:1.5;margin-top:5px}
+  .pill{padding:7px 10px;font-size:9.5px}
+
+  /* Cards and dashboard grids */
+  .grid4,.grid3,.score-grid,.section-grid,.integration-grid{grid-template-columns:1fr!important;gap:11px}
+  .kpi,.card{border-radius:15px}
+  .kpi{min-height:auto;padding:14px}
+  .value{font-size:26px;margin-top:7px}
+  .card{padding:14px}
+  .card h3{font-size:13px}
+  .score-grid{margin-top:10px}
+  .score{min-height:auto;padding:11px}
+  .score .big{font-size:20px}
+  .dept-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px}
+
+  /* Charts: keep them legible without forcing very tall pages */
+  canvas{height:220px!important;max-width:100%}
+  .dsc-panel canvas{height:205px!important}
+
+  /* Forms: one column, finger-friendly controls, no iOS focus zoom */
+  form,.fields{grid-template-columns:1fr!important;gap:11px}
+  fieldset{padding:13px;border-radius:14px;min-width:0}
+  fieldset.full{grid-column:auto}
+  legend{font-size:11px}
+  label{font-size:10px;margin-bottom:5px}
+  input,select,textarea{
+    min-height:44px;font-size:16px!important;padding:10px 11px;border-radius:10px
+  }
+  textarea{min-height:92px}
+  .actions{
+    position:sticky;bottom:0;z-index:80;display:grid!important;grid-template-columns:1fr;
+    gap:8px;margin:4px -4px -4px;padding:10px 4px calc(8px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(246,247,251,0),rgba(246,247,251,.96) 22%,#f6f7fb 100%)
+  }
+  .btn{min-height:44px;padding:10px 13px;font-size:12px;touch-action:manipulation}
+  .actions .btn,.report-toolbar .btn,.scorecard-toolbar .btn{width:100%}
+  .entry-scope-banner{padding:10px 11px;gap:9px}
+  .entry-scope-icon{width:34px;height:34px}
+  .department-form .form-intro{padding:10px 11px}
+
+  /* Toolbars stack cleanly and selectors remain usable */
+  .report-toolbar,.scorecard-toolbar{display:grid;grid-template-columns:1fr;align-items:stretch;gap:8px}
+  .report-toolbar>*,.scorecard-toolbar>*{width:100%;min-width:0}
+
+  /* Tables: swipe horizontally inside the table, never the whole page */
+  table,.target-table,.mapping-table,.report-table,.action-table{
+    display:block;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;white-space:nowrap;border-radius:11px
+  }
+  thead,tbody{width:max-content;min-width:100%}
+  th,td{padding:9px 8px;font-size:10.5px}
+  th{font-size:8.5px}
+  .action-table td,.action-table th{white-space:normal}
+  .target-table input,.target-table select,.mapping-table input,.mapping-table select,
+  .action-table input,.action-table select,.action-table textarea{font-size:14px!important;min-height:40px}
+
+  /* Reports and scorecards are readable on screen; print rules remain A4 */
+  .report-sheet,.dept-scorecard-sheet{padding:14px;border-radius:14px;min-height:auto}
+  .report-head,.dsc-head{flex-direction:column;gap:8px}
+  .report-meta,.dsc-meta{text-align:left}
+  .report-grid{grid-template-columns:1fr 1fr!important;gap:8px}
+  .report-metric{padding:10px}
+  .report-footer,.dsc-footer{flex-direction:column;gap:4px}
+  .dsc-title{align-items:flex-start}
+  .dsc-title h2{font-size:19px}
+  .dsc-kpis,.dsc-status-grid{grid-template-columns:1fr!important;gap:8px}
+  .dsc-body{grid-template-columns:1fr!important;gap:10px}
+  .dsc-panel{padding:11px}
+
+  /* Integration/admin panels */
+  .sync-summary{grid-template-columns:1fr 1fr!important;gap:8px}
+  .code-hint{font-size:9px;max-width:100%;overflow-x:auto}
+
+  /* Login fits short devices and keyboards */
+  .login-shell{
+    align-items:flex-start;padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom));
+    overflow-y:auto
+  }
+  .login-card{width:100%;max-width:470px;padding:18px 16px;border-radius:18px;margin:auto}
+  .login-brand{margin-bottom:13px}
+  .login-brand-mark{width:42px;height:42px}
+  .login-card h2{font-size:20px;line-height:1.2}
+  .login-card p{font-size:11px}
+  .login-fields{gap:10px;margin-top:14px}
+  .login-note{font-size:9.5px}
+
+  /* Disable desktop hover motion on touch-sized screens */
+  .kpi:hover,.card:hover,.btn.primary:hover,nav button:hover{transform:none}
+}
+
+@media screen and (max-width:480px){
+  main{padding-left:10px;padding-right:10px}
+  main::before{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+  .brand p{display:none}
+  .grid4,.grid3,.score-grid,.dept-strip{grid-template-columns:1fr!important}
+  .report-grid,.sync-summary{grid-template-columns:1fr!important}
+  .report-sheet,.dept-scorecard-sheet{padding:11px}
+  .topbar{align-items:stretch}
+  .pill{align-self:flex-start}
+  h2{font-size:21px}
+  canvas{height:205px!important}
+}
+
+@media screen and (orientation:landscape) and (max-height:520px) and (max-width:950px){
+  aside{position:relative}
+  .brand{display:none}
+  .session-card{margin-bottom:5px}
+  nav button{min-height:38px;padding:7px 10px}
+  .login-card{margin:0 auto}
+}
+
+</style>
+</head>
+<body>
+
+<div id="loginShell" class="login-shell">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-brand-mark">A+</div>
+      <div>
+        <h2>Accucare Performance Intelligence</h2>
+        <p>Department-scoped access for monthly performance reporting.</p>
+      </div>
+    </div>
+
+    <div class="login-fields">
+      <div>
+        <label>User name</label>
+        <input id="loginName" placeholder="Enter your name">
+      </div>
+      <div>
+        <label>Role</label>
+        <select id="loginRole">
+          <option value="Administrator">Administrator</option>
+          <option value="Manager">Manager</option>
+          <option value="Department Lead">Department Lead</option>
+          <option value="Data Entry">Data Entry</option>
+          <option value="Viewer">Viewer</option>
+        </select>
+      </div>
+      <div>
+        <label>Department</label>
+        <select id="loginDepartment">
+          <option value="all">All Departments / Management</option>
+          <option value="doctor">OPD / Doctor</option>
+          <option value="pharmacy">Pharmacy</option>
+          <option value="lab">Laboratory</option>
+          <option value="nursing">Nursing</option>
+          <option value="mch">MCH</option>
+          <option value="homecare">Home Care</option>
+          <option value="physiotherapy">Physiotherapy</option>
+          <option value="optical">Optical</option>
+          <option value="radiology">Radiology</option>
+        </select>
+      </div>
+      <button id="loginBtn" class="btn primary" style="width:100%">Enter Platform</button>
+    </div>
+
+    <div class="login-note">
+      In this browser prototype, login controls which department forms and views are shown. It is not a secure authentication system; production deployment should use real user accounts and server-side permissions.
+    </div>
+  </div>
+</div>
+
+<div class="app">
+<aside>
+  <div class="brand"><div class="brandmark">A+</div><div><h1>ACCUCARE</h1><p>Clinic & Home-Based Nursing</p></div></div>
+  
+<div id="sessionCard" class="session-card" style="display:none">
+  <div class="slabel">Signed in as</div>
+  <div id="sessionName" class="svalue">—</div>
+  <div id="sessionRole" class="srole">—</div>
+  <button id="switchUserBtn">Switch user / department</button>
+</div>
+
+<nav>
+    <button class="active" data-tab="dashboard">▦ Dashboard</button>
+    <button class="nav-entry" data-tab="entry">＋ Monthly Entry</button>
+    <button data-tab="department">▤ Department View</button>
+    <button data-tab="trends">⌁ Trend Analysis</button>
+    <button class="nav-admin" data-tab="targets">◎ KPI Targets</button>
+    <button class="nav-admin" data-tab="depttargets">◫ Dept. Targets</button>
+    <button class="nav-admin" data-tab="workflow">✓ Approvals</button>
+    <button class="nav-admin" data-tab="integration">⇄ CMS Integration</button>
+    <button data-tab="reports">▣ Monthly Report</button>
+    <button data-tab="deptscorecards">▤ Dept. Scorecards</button>
+    <button data-tab="records">≡ Records</button>
+  </nav>
+  <div class="side-note"><b style="color:#fff">Management Intelligence</b><br>Clinical • Operational • Financial • Quality<br><span style="opacity:.72">Hosted QA build v10</span></div>
+</aside>
+
+<main>
+<section id="dashboard" class="tab active">
+  <div class="topbar">
+    <div><h2>Performance Overview</h2><p>A concise executive view of patient activity, service utilization, quality, finance and operational performance.</p></div>
+    <div class="pill" id="periodPill"></div>
+  </div>
+
+  <div class="grid4">
+    <div class="kpi"><div class="label">Total patients</div><div class="value" id="kpiPatients">—</div><div class="delta" id="dPatients"></div></div>
+    <div class="kpi"><div class="label">Revenue</div><div class="value" id="kpiRevenue">—</div><div class="delta" id="dRevenue"></div></div>
+    <div class="kpi"><div class="label">Avg revenue / patient</div><div class="value" id="kpiRpp">—</div><div class="delta neutral">Monthly productivity indicator</div></div>
+    <div class="kpi"><div class="label">Patient satisfaction</div><div class="value" id="kpiSat">—</div><div class="delta neutral">Target ≥ 90%</div></div>
+  </div>
+
+  <div class="dept-strip">
+    <div class="dept-chip dept-opd"><div class="dept-icon">🩺</div><div class="dept-copy"><b>OPD / Doctor</b><span>Consultations</span></div></div>
+    <div class="dept-chip dept-pharmacy"><div class="dept-icon">💊</div><div class="dept-copy"><b>Pharmacy</b><span>Dispensing & OTC</span></div></div>
+    <div class="dept-chip dept-lab"><div class="dept-icon">🧪</div><div class="dept-copy"><b>Laboratory</b><span>Diagnostics</span></div></div>
+    <div class="dept-chip dept-nursing"><div class="dept-icon">✚</div><div class="dept-copy"><b>Nursing</b><span>Procedures & care</span></div></div>
+    <div class="dept-chip dept-mch"><div class="dept-icon">👶</div><div class="dept-copy"><b>MCH</b><span>ANC, CWC & FP</span></div></div>
+    <div class="dept-chip dept-home"><div class="dept-icon">⌂</div><div class="dept-copy"><b>Home Care</b><span>Home-based nursing</span></div></div>
+    <div class="dept-chip dept-physio"><div class="dept-icon">♿</div><div class="dept-copy"><b>Physiotherapy</b><span>Rehabilitation & mobility</span></div></div>
+    <div class="dept-chip dept-optical"><div class="dept-icon">◉</div><div class="dept-copy"><b>Optical</b><span>Vision & eye services</span></div></div>
+    <div class="dept-chip dept-radiology"><div class="dept-icon">⊙</div><div class="dept-copy"><b>Radiology</b><span>Imaging services</span></div></div>
+  </div>
+
+  <div class="score-grid">
+    <div class="score"><b>OPD / Consultations</b><div class="big" id="sDoctor">—</div><div class="tiny">Doctor encounters</div></div>
+    <div class="score"><b>Laboratory</b><div class="big" id="sLab">—</div><div class="tiny">Tests / services</div></div>
+    <div class="score"><b>Pharmacy</b><div class="big" id="sPharmacy">—</div><div class="tiny">Dispensing / OTC services</div></div>
+    <div class="score"><b>Nursing</b><div class="big" id="sNursing">—</div><div class="tiny">Nursing services</div></div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card"><h3>Patient attendance trend</h3><div class="sub">Monthly total patient visits</div><canvas id="trendChart"></canvas></div>
+    <div class="card"><h3>Department utilization</h3><div class="sub">Latest reporting period</div><canvas id="deptChart"></canvas>
+<div class="dept-legend">
+  <span><i style="--c:#2f80ed"></i>OPD</span>
+  <span><i style="--c:#15916d"></i>Pharmacy</span>
+  <span><i style="--c:#c84f7a"></i>Nursing</span>
+  <span><i style="--c:#7a4fc7"></i>Laboratory</span>
+  <span><i style="--c:#d9891b"></i>MCH</span>
+  <span><i style="--c:#2d8ea5"></i>Home care</span>
+  <span><i style="--c:#2477b9"></i>Physiotherapy</span>
+  <span><i style="--c:#5368c7"></i>Optical</span>
+  <span><i style="--c:#526a7b"></i>Radiology</span>
+</div></div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card"><h3>Financial performance</h3><div class="sub">Revenue, expenses and collection performance</div><canvas id="financeChart"></canvas></div>
+    <div class="card"><h3>Quality & patient experience</h3><div class="sub">Clinical quality, safety and service experience</div><div id="qualityScores" class="score-grid" style="grid-template-columns:1fr 1fr"></div></div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card"><h3>Operational indicators</h3><div class="sub">Resource availability and service reliability</div><div id="opsScores" class="score-grid" style="grid-template-columns:1fr 1fr"></div></div>
+    <div class="card"><h3>Management insights</h3><div class="sub">Automated interpretation of the latest data</div><div id="insights"></div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>KPI Health Check</h3>
+    <div class="sub">Green = meeting target, Amber = close to target, Red = management attention required.</div>
+    <div id="kpiHealthGrid" class="status-grid"></div>
+  </div>
+</section>
+
+<section id="entry" class="tab">
+  <div class="topbar"><div><h2>Monthly Performance Entry</h2><p>Capture clinical, operational, financial and quality indicators for each reporting period. New entries are saved as Draft until reviewed.</p></div></div>
+  <div class="entry-scope-banner">
+    <div class="entry-scope-left">
+      <div id="entryScopeIcon" class="entry-scope-icon">◎</div>
+      <div>
+        <b id="entryScopeTitle">Department Data Entry</b>
+        <span id="entryScopeText">Only fields assigned to your department are displayed.</span>
+      </div>
+    </div>
+    <span id="entryScopeBadge" class="entry-scope-badge">Strict department access</span>
+  </div>
+
+  <form id="entryForm">
+    <div id="deptFormHeader" class="form-intro" style="display:none">
+      <div id="deptFormHeaderIcon" class="ficon">◎</div>
+      <div><b id="deptFormHeaderTitle">Department Monthly Entry</b><span id="deptFormHeaderSub">Enter only your department's monthly indicators.</span></div>
+    </div>
+    <fieldset class="department-form active" data-scope="shared"><legend>Reporting Period</legend><div class="fields">
+      <div><label>Month</label><select id="month"></select></div>
+      <div><label>Year</label><input id="year" type="number" value="2026" min="2020" max="2100"></div>
+    </div></fieldset>
+
+    <div class="section-title scoped-section-title" data-section-scope="doctor pharmacy lab nursing mch homecare physiotherapy optical radiology admin">Patient Flow & Clinical Activity</div>
+    <fieldset class="department-form" data-scope="doctor"><legend>Patient Statistics</legend><div class="fields">
+      <div><label>Total patients</label><input id="patients" type="number" min="0"></div>
+      <div><label>New visits</label><input id="newVisits" type="number" min="0"></div>
+      <div><label>Revisits</label><input id="revisits" type="number" min="0"></div>
+      <div><label>Appointments booked</label><input id="appointments" type="number" min="0"></div>
+      <div><label>No-shows</label><input id="noShows" type="number" min="0"></div>
+      <div><label>Referrals out</label><input id="referralsOut" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="doctor pharmacy lab nursing mch homecare physiotherapy optical radiology admin"><legend>Department Utilization</legend><div class="fields">
+      <div class="dept-field" data-field-scope="doctor"><label>Doctor consultations</label><input id="doctor" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="pharmacy"><label>Pharmacy services</label><input id="pharmacy" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="nursing"><label>Nursing services</label><input id="nursing" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="lab"><label>Laboratory services</label><input id="lab" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="homecare"><label>Home-care visits</label><input id="homecare" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="doctor"><label>Procedures / minor surgery</label><input id="procedures" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="physiotherapy"><label>Physiotherapy visits</label><input id="physiotherapy" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="optical"><label>Optical visits / services</label><input id="optical" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>Radiology / imaging services</label><input id="radiology" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="mch"><legend>Maternal & Child Health</legend><div class="fields">
+      <div><label>ANC visits</label><input id="anc" type="number" min="0"></div>
+      <div><label>PNC visits</label><input id="pnc" type="number" min="0"></div>
+      <div><label>CWC visits</label><input id="cwc" type="number" min="0"></div>
+      <div><label>Family planning</label><input id="fp" type="number" min="0"></div>
+      <div><label>Immunizations</label><input id="immunization" type="number" min="0"></div>
+      <div><label>Ultrasound services</label><input id="ultrasound" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="lab nursing"><legend>Diagnostics & Nursing</legend><div class="fields">
+      <div class="dept-field" data-field-scope="lab"><label>Walk-in lab tests</label><input id="labWalkin" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="lab"><label>Clinician-requested lab tests</label><input id="labClinician" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="nursing"><label>Nursing procedures</label><input id="nursingProcedures" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="nursing"><label>Doctor-requested nursing procedures</label><input id="doctorProcedures" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="physiotherapy optical radiology"><legend>Outpatient Specialty Services</legend><div class="fields">
+      <div class="dept-field" data-field-scope="physiotherapy"><label>Physiotherapy assessments</label><input id="physioAssessments" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="physiotherapy"><label>Physiotherapy treatment sessions</label><input id="physioSessions" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="optical"><label>Optical eye examinations</label><input id="opticalExams" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="optical"><label>Spectacles / optical orders</label><input id="opticalOrders" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>X-ray examinations</label><input id="xray" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>Ultrasound / imaging examinations</label><input id="radiologyUltrasound" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>External imaging referrals</label><input id="imagingReferrals" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>Radiology reports completed</label><input id="radiologyReports" type="number" min="0"></div>
+    </div></fieldset>
+
+
+    <div class="section-title scoped-section-title" data-section-scope="admin">Patient Acquisition & Experience</div>
+    <fieldset class="department-form" data-scope="admin"><legend>Acquisition Channels</legend><div class="fields">
+      <div><label>Self-discovery / walk-in</label><input id="selfDiscovery" type="number" min="0"></div>
+      <div><label>Social media</label><input id="socialMedia" type="number" min="0"></div>
+      <div><label>Referral / word-of-mouth</label><input id="referral" type="number" min="0"></div>
+      <div><label>Marketing campaigns</label><input id="marketing" type="number" min="0"></div>
+      <div><label>Corporate / insurance source</label><input id="corporateSource" type="number" min="0"></div>
+      <div><label>Community outreach</label><input id="communitySource" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="admin"><legend>Patient Experience</legend><div class="fields">
+      <div><label>Satisfaction score (%)</label><input id="satisfaction" type="number" min="0" max="100" step="0.1"></div>
+      <div><label>Complaints received</label><input id="complaints" type="number" min="0"></div>
+      <div><label>Complaints resolved</label><input id="complaintsResolved" type="number" min="0"></div>
+      <div><label>Avg waiting time (minutes)</label><input id="waitingTime" type="number" min="0" step="0.1"></div>
+      <div><label>Patients leaving before service</label><input id="leftBeforeService" type="number" min="0"></div>
+      <div><label>Follow-up compliance (%)</label><input id="followupRate" type="number" min="0" max="100" step="0.1"></div>
+    </div></fieldset>
+
+    <div class="section-title scoped-section-title" data-section-scope="doctor pharmacy lab nursing mch homecare physiotherapy optical radiology admin">Finance & Revenue Cycle</div>
+    <fieldset class="department-form" data-scope="admin"><legend>Financial Performance</legend><div class="fields">
+      <div><label>Total billed revenue (KES)</label><input id="revenue" type="number" min="0"></div>
+      <div><label>Cash collected (KES)</label><input id="cashCollected" type="number" min="0"></div>
+      <div><label>Insurance / corporate revenue (KES)</label><input id="insuranceRevenue" type="number" min="0"></div>
+      <div><label>Outstanding receivables (KES)</label><input id="receivables" type="number" min="0"></div>
+      <div><label>Total operating expenses (KES)</label><input id="expenses" type="number" min="0"></div>
+      <div><label>Discounts / waivers (KES)</label><input id="discounts" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="doctor pharmacy lab nursing mch homecare physiotherapy optical radiology admin"><legend>Department Revenue</legend><div class="fields">
+      <div class="dept-field" data-field-scope="doctor"><label>Consultation revenue (KES)</label><input id="revConsult" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="pharmacy"><label>Pharmacy revenue (KES)</label><input id="revPharmacy" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="lab"><label>Laboratory revenue (KES)</label><input id="revLab" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="nursing"><label>Nursing revenue (KES)</label><input id="revNursing" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="mch"><label>MCH revenue (KES)</label><input id="revMch" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="homecare"><label>Home-care revenue (KES)</label><input id="revHomecare" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="physiotherapy"><label>Physiotherapy revenue (KES)</label><input id="revPhysio" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="optical"><label>Optical revenue (KES)</label><input id="revOptical" type="number" min="0"></div>
+      <div class="dept-field" data-field-scope="radiology"><label>Radiology revenue (KES)</label><input id="revRadiology" type="number" min="0"></div>
+    </div></fieldset>
+
+    <div class="section-title scoped-section-title" data-section-scope="admin">Quality, Safety & Clinical Governance</div>
+    <fieldset class="department-form" data-scope="admin"><legend>Quality & Safety</legend><div class="fields">
+      <div><label>Adverse events / incidents</label><input id="adverseEvents" type="number" min="0"></div>
+      <div><label>Medication errors</label><input id="medErrors" type="number" min="0"></div>
+      <div><label>Patient readmissions / returns within 72h</label><input id="returns72h" type="number" min="0"></div>
+      <div><label>Emergency transfers</label><input id="emergencyTransfers" type="number" min="0"></div>
+      <div><label>Infection-control incidents</label><input id="infectionIncidents" type="number" min="0"></div>
+      <div><label>Clinical audit compliance (%)</label><input id="auditCompliance" type="number" min="0" max="100" step="0.1"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="admin"><legend>Clinical Documentation</legend><div class="fields">
+      <div><label>Records audited</label><input id="recordsAudited" type="number" min="0"></div>
+      <div><label>Complete records</label><input id="recordsComplete" type="number" min="0"></div>
+      <div><label>Prescriptions audited</label><input id="prescriptionsAudited" type="number" min="0"></div>
+      <div><label>Prescriptions compliant</label><input id="prescriptionsCompliant" type="number" min="0"></div>
+    </div></fieldset>
+
+    <div class="section-title scoped-section-title" data-section-scope="pharmacy admin">Pharmacy, Inventory & Supplies</div>
+    <fieldset class="department-form" data-scope="pharmacy"><legend>Pharmacy & Stock</legend><div class="fields">
+      <div><label>OTC services</label><input id="otc" type="number" min="0"></div>
+      <div><label>Prescription dispensing</label><input id="rxDispensed" type="number" min="0"></div>
+      <div><label>Stock-out items (count)</label><input id="stockouts" type="number" min="0"></div>
+      <div><label>Expired / damaged stock value (KES)</label><input id="expiredStock" type="number" min="0"></div>
+      <div><label>Inventory variance value (KES)</label><input id="inventoryVariance" type="number" min="0"></div>
+      <div><label>Critical items available (%)</label><input id="criticalAvailability" type="number" min="0" max="100" step="0.1"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="admin"><legend>Consumables & Equipment</legend><div class="fields">
+      <div><label>Equipment downtime (hours)</label><input id="equipmentDowntime" type="number" min="0" step="0.1"></div>
+      <div><label>Essential equipment operational (%)</label><input id="equipmentUptime" type="number" min="0" max="100" step="0.1"></div>
+      <div><label>Emergency stock-outs</label><input id="emergencyStockouts" type="number" min="0"></div>
+      <div><label>Reorder compliance (%)</label><input id="reorderCompliance" type="number" min="0" max="100" step="0.1"></div>
+    </div></fieldset>
+
+    <div class="section-title scoped-section-title" data-section-scope="admin">Human Resources & Productivity</div>
+    <fieldset class="department-form" data-scope="admin"><legend>Staffing</legend><div class="fields">
+      <div><label>Total clinical staff</label><input id="clinicalStaff" type="number" min="0"></div>
+      <div><label>Total support staff</label><input id="supportStaff" type="number" min="0"></div>
+      <div><label>Staff absent days</label><input id="staffAbsenceDays" type="number" min="0"></div>
+      <div><label>Overtime hours</label><input id="overtimeHours" type="number" min="0" step="0.1"></div>
+      <div><label>Training hours</label><input id="trainingHours" type="number" min="0" step="0.1"></div>
+      <div><label>Staff turnover (count)</label><input id="staffTurnover" type="number" min="0"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form" data-scope="admin"><legend>Operational Reliability</legend><div class="fields">
+      <div><label>Clinic downtime (hours)</label><input id="clinicDowntime" type="number" min="0" step="0.1"></div>
+      <div><label>Power outage hours</label><input id="powerOutage" type="number" min="0" step="0.1"></div>
+      <div><label>System / internet downtime (hours)</label><input id="systemDowntime" type="number" min="0" step="0.1"></div>
+      <div><label>Days fully operational</label><input id="daysOperational" type="number" min="0" max="31"></div>
+    </div></fieldset>
+
+    <fieldset class="department-form active" data-scope="shared"><legend>Department Notes</legend>
+      <textarea id="notes" placeholder="Department achievements, challenges, risks, corrective actions and recommendations..."></textarea>
+      <div class="note">Keep notes specific to the department and reporting month.</div>
+    </fieldset>
+
+    <div class="actions"><button type="reset" class="btn secondary">Clear</button><button type="submit" class="btn primary">Save monthly entry</button></div>
+  </form>
+</section>
+
+<section id="department" class="tab">
+  <div class="topbar"><div><h2>Department Intelligence</h2><p>Compare service demand, revenue contribution and productivity across core and outpatient specialty departments.</p></div></div>
+  <div class="section-grid">
+    <div class="card"><h3>Service volume by department</h3><div class="sub">Latest month</div><canvas id="deptDetailChart"></canvas></div>
+    <div class="card"><h3>Revenue by department</h3><div class="sub">Latest month</div><canvas id="revDeptChart"></canvas></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Department Scorecard</h3>
+    <div class="sub">Activity, revenue contribution and productivity by service area</div>
+    <div class="grid3" style="margin-top:14px">
+      <div class="card dept-card dept-opd-card"><div class="dept-card-head"><div class="dept-mini-icon">🩺</div><div class="dept-title-wrap"><b>OPD / Doctor</b><span>Consultation performance</span></div></div><div id="deptOpdCard"></div></div>
+      <div class="card dept-card dept-pharmacy-card"><div class="dept-card-head"><div class="dept-mini-icon">💊</div><div class="dept-title-wrap"><b>Pharmacy</b><span>Dispensing performance</span></div></div><div id="deptPharmacyCard"></div></div>
+      <div class="card dept-card dept-lab-card"><div class="dept-card-head"><div class="dept-mini-icon">🧪</div><div class="dept-title-wrap"><b>Laboratory</b><span>Diagnostic performance</span></div></div><div id="deptLabCard"></div></div>
+      <div class="card dept-card dept-nursing-card"><div class="dept-card-head"><div class="dept-mini-icon">✚</div><div class="dept-title-wrap"><b>Nursing</b><span>Procedure performance</span></div></div><div id="deptNursingCard"></div></div>
+      <div class="card dept-card dept-mch-card"><div class="dept-card-head"><div class="dept-mini-icon">👶</div><div class="dept-title-wrap"><b>MCH</b><span>Maternal & child health</span></div></div><div id="deptMchCard"></div></div>
+      <div class="card dept-card dept-home-card"><div class="dept-card-head"><div class="dept-mini-icon">⌂</div><div class="dept-title-wrap"><b>Home Care</b><span>Home-based nursing</span></div></div><div id="deptHomeCard"></div></div>
+      <div class="card dept-card dept-physio-card"><div class="dept-card-head"><div class="dept-mini-icon">♿</div><div class="dept-title-wrap"><b>Physiotherapy</b><span>Rehabilitation & mobility</span></div></div><div id="deptPhysioCard"></div></div>
+      <div class="card dept-card dept-optical-card"><div class="dept-card-head"><div class="dept-mini-icon">◉</div><div class="dept-title-wrap"><b>Optical</b><span>Vision services</span></div></div><div id="deptOpticalCard"></div></div>
+      <div class="card dept-card dept-radiology-card"><div class="dept-card-head"><div class="dept-mini-icon">⊙</div><div class="dept-title-wrap"><b>Radiology</b><span>Imaging services</span></div></div><div id="deptRadiologyCard"></div></div>
+    </div>
+    <div id="departmentTableWrap" style="overflow:auto;margin-top:16px"></div>
+<div style="margin-top:18px"><h3>Department Target Performance</h3><div class="sub">Current month performance against configured service, revenue and productivity targets</div><div id="departmentTargetSummary" class="dept-target-grid"></div></div>
+  </div>
+</section>
+
+
+<section id="trends" class="tab">
+  <div class="topbar">
+    <div>
+      <h2>Trend Intelligence</h2>
+      <p>Monitor direction of travel, emerging risks and sustained performance changes across the clinic.</p>
+    </div>
+    <div class="pill">Monthly time-series analysis</div>
+  </div>
+
+  <div class="grid4">
+    <div class="kpi"><div class="label">Patient growth</div><div class="value" id="trendPatientGrowth">—</div><div class="delta neutral">Latest month-on-month</div></div>
+    <div class="kpi"><div class="label">Revenue growth</div><div class="value" id="trendRevenueGrowth">—</div><div class="delta neutral">Latest month-on-month</div></div>
+    <div class="kpi"><div class="label">Collection rate</div><div class="value" id="trendCollectionRate">—</div><div class="delta neutral">Latest reporting month</div></div>
+    <div class="kpi"><div class="label">Patient satisfaction</div><div class="value" id="trendSatisfaction">—</div><div class="delta neutral">Latest reporting month</div></div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card">
+      <h3>Patient volume trend</h3>
+      <div class="sub">Total patients, new visits and revisits over time</div>
+      <canvas id="trendPatientsMulti"></canvas>
+    </div>
+    <div class="card">
+      <h3>Department service trends</h3>
+      <div class="sub">Doctor, pharmacy, nursing and laboratory activity</div>
+      <canvas id="trendDepartmentsMulti"></canvas>
+    </div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card">
+      <h3>Financial trend</h3>
+      <div class="sub">Billed revenue, cash collected and operating expenses</div>
+      <canvas id="trendFinancialMulti"></canvas>
+    </div>
+    <div class="card">
+      <h3>Revenue efficiency trend</h3>
+      <div class="sub">Revenue per patient and collection rate</div>
+      <canvas id="trendEfficiencyMulti"></canvas>
+    </div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card">
+      <h3>Patient experience trend</h3>
+      <div class="sub">Satisfaction, waiting time and follow-up compliance</div>
+      <canvas id="trendExperienceMulti"></canvas>
+    </div>
+    <div class="card">
+      <h3>Quality & safety trend</h3>
+      <div class="sub">Adverse events, medication errors, 72-hour returns and infection-control incidents</div>
+      <canvas id="trendQualityMulti"></canvas>
+    </div>
+  </div>
+
+  <div class="section-grid">
+    <div class="card">
+      <h3>Operational reliability trend</h3>
+      <div class="sub">Equipment uptime, critical stock availability and downtime indicators</div>
+      <canvas id="trendOperationsMulti"></canvas>
+    </div>
+    <div class="card">
+      <h3>Trend-based management signals</h3>
+      <div class="sub">Automatic flags based on recent direction of travel</div>
+      <div id="trendInsights"></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="targets" class="tab">
+  <div class="topbar">
+    <div><h2>KPI Targets & Thresholds</h2><p>Set management benchmarks used by the dashboard to classify performance as Green, Amber or Red.</p></div>
+  </div>
+  <div class="target-note">
+    Targets are stored in this browser and can be adjusted to Accucare's agreed service standards. 
+    For “lower is better” measures such as waiting time, no-show rate and stock-outs, performance is green when the value is at or below the target.
+  </div>
+  <div class="card">
+    <div style="overflow:auto">
+      <table class="target-table">
+        <thead><tr><th>Indicator</th><th>Direction</th><th>Green target</th><th>Amber tolerance</th><th>Unit</th></tr></thead>
+        <tbody id="targetsBody"></tbody>
+      </table>
+    </div>
+    <div class="actions" style="margin-top:14px"><button id="resetTargets" class="btn secondary">Reset defaults</button><button id="saveTargets" class="btn primary">Save targets</button></div>
+  </div>
+</section>
+
+
+<section id="depttargets" class="tab">
+  <div class="topbar">
+    <div>
+      <h2>Department KPI Targets</h2>
+      <p>Define monthly service-volume, revenue and productivity targets for each outpatient department.</p>
+    </div>
+  </div>
+  <div class="target-note">
+    Each department can be managed against three core benchmarks: service volume, monthly revenue, and revenue per service.
+    Green means the target is met or exceeded; Amber means performance is within the configured tolerance; Red indicates a material shortfall.
+  </div>
+  <div id="departmentTargetGrid" class="dept-target-grid"></div>
+  <div class="actions" style="margin-top:16px">
+    <button id="resetDeptTargets" class="btn secondary">Reset department targets</button>
+    <button id="saveDeptTargets" class="btn primary">Save department targets</button>
+  </div>
+</section>
+
+<section id="workflow" class="tab">
+  <div class="topbar">
+    <div><h2>Monthly Review & Approval</h2><p>Track whether monthly submissions are Draft, Submitted, Approved or Returned for correction.</p></div>
+  </div>
+
+  <div class="workflow-bar">
+    <label style="margin:0">Current role</label>
+    <select id="roleSelect" class="role-select">
+      <option>Administrator</option>
+      <option>Manager</option>
+      <option>Department Lead</option>
+      <option>Data Entry</option>
+      <option>Viewer</option>
+    </select>
+    <span class="sub">Local workflow control for this prototype; not a secure authentication system.</span>
+  </div>
+
+  <div class="card">
+    <h3>Reporting Period Status</h3>
+    <div class="sub">Select a monthly record to review its workflow status and comments.</div>
+    <div class="fields" style="margin-top:13px">
+      <div><label>Record</label><select id="approvalRecord"></select></div>
+      <div><label>Current status</label><div id="approvalStatusWrap" style="padding-top:7px"></div></div>
+    </div>
+    <div style="margin-top:12px">
+      <label>Review comment</label>
+      <textarea id="approvalComment" placeholder="Add approval note, correction request or management comment..."></textarea>
+    </div>
+    <div class="approval-actions">
+      <button class="btn secondary" id="markDraft">Save as Draft</button>
+      <button class="btn secondary" id="submitRecord">Submit for Review</button>
+      <button class="btn primary" id="approveRecord">Approve</button>
+      <button class="btn secondary" id="returnRecord">Return for Correction</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Audit Trail</h3>
+    <div class="sub">Recent workflow actions stored with the local dataset.</div>
+    <div id="auditList" class="audit-list"></div>
+  </div>
+</section>
+
+
+<section id="reports" class="tab">
+  <div class="topbar">
+    <div>
+      <h2>Monthly Management Report</h2>
+      <p>Generate a concise printable management report from any recorded month.</p>
+    </div>
+  </div>
+
+  <div class="report-toolbar">
+    <div style="min-width:220px">
+      <label>Reporting month</label>
+      <select id="reportRecord"></select>
+    </div>
+    <button id="refreshReport" class="btn secondary">Refresh Report</button>
+    <button id="exportReportCsv" class="btn secondary">Export Report CSV</button>
+    <button id="exportReportHtml" class="btn secondary">Download Report HTML</button>
+    <button id="printReport" class="btn primary">Print / Save as PDF</button>
+  </div>
+
+  <div id="reportSheet" class="report-sheet"></div>
+</section>
+
+
+<section id="deptscorecards" class="tab">
+  <div class="topbar">
+    <div>
+      <h2>Department One-Page Scorecards</h2>
+      <p>Printable departmental performance pages combining targets, actual results, traffic-light status, trends and management actions.</p>
+    </div>
+  </div>
+
+  <div class="scorecard-toolbar">
+    <div style="min-width:180px">
+      <label>Reporting month</label>
+      <select id="scorecardRecord"></select>
+    </div>
+    <div style="min-width:180px">
+      <label>Department</label>
+      <select id="scorecardDepartment"></select>
+    </div>
+    <button id="refreshScorecard" class="btn secondary">Refresh</button>
+    <button id="saveScorecardActions" class="btn secondary">Save Actions</button>
+    <button id="exportScorecardHtml" class="btn secondary">Download Scorecard HTML</button>
+    <button id="printScorecard" class="btn primary">Print / Save as PDF</button>
+  </div>
+
+  <div id="departmentScorecardSheet" class="dept-scorecard-sheet"></div>
+</section>
+
+
+<section id="integration" class="tab">
+  <div class="topbar">
+    <div>
+      <h2>CMS Data Integration</h2>
+      <p>Receive structured data from the Accucare CMS and merge it into the performance dashboard.</p>
+    </div>
+  </div>
+
+  <div class="integration-grid">
+    <div class="integration-card">
+      <h3>Connection</h3>
+      <div class="sub">Configure the CMS API source. The admin webpage itself is not used as a data feed; the CMS must expose a JSON API or a server-side proxy endpoint.</div>
+      <div class="fields" style="margin-top:13px">
+        <div><label>CMS base URL</label><input id="cmsBaseUrl" value="https://cms.accucarehealth.org"></div>
+        <div><label>API endpoint</label><input id="cmsEndpoint" placeholder="/api/performance/monthly"></div>
+        <div><label>Authentication mode</label>
+          <select id="cmsAuthMode">
+            <option value="none">None / public endpoint</option>
+            <option value="bearer">Bearer token</option>
+            <option value="cookie">Existing CMS session cookie</option>
+            <option value="proxy">Server-side proxy</option>
+          </select>
+        </div>
+        <div><label>Bearer token</label><input id="cmsToken" type="password" placeholder="Not recommended for permanent browser storage"></div>
+        <div><label>Proxy URL</label><input id="cmsProxyUrl" placeholder="https://your-server.example/api/accucare-sync"></div>
+        <div><label>Auto-refresh interval</label>
+          <select id="cmsRefreshMinutes">
+            <option value="0">Manual only</option>
+            <option value="15">Every 15 minutes</option>
+            <option value="30">Every 30 minutes</option>
+            <option value="60">Every hour</option>
+            <option value="360">Every 6 hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions" style="margin-top:12px">
+        <button id="saveCmsConfig" class="btn secondary">Save configuration</button>
+        <button id="testCmsConnection" class="btn secondary">Test connection</button>
+        <button id="syncCmsNow" class="btn primary">Sync now</button>
+      </div>
+      <div id="cmsConnectionStatus" class="integration-status"><span class="dot"></span><span>Not tested</span></div>
+    </div>
+
+    <div class="integration-card">
+      <h3>Sync Behaviour</h3>
+      <div class="sub">Controls how incoming CMS records are combined with data already entered in this platform.</div>
+      <div class="fields" style="margin-top:13px">
+        <div><label>Merge policy</label>
+          <select id="cmsMergePolicy">
+            <option value="fill">Fill missing fields only</option>
+            <option value="overwrite">CMS overwrites matching fields</option>
+            <option value="newer">Use newest record by updated date</option>
+          </select>
+        </div>
+        <div><label>Record date field</label><input id="cmsUpdatedField" value="updated_at"></div>
+        <div><label>Month field</label><input id="cmsMonthField" value="month"></div>
+        <div><label>Year field</label><input id="cmsYearField" value="year"></div>
+      </div>
+      <div class="sync-summary">
+        <div class="sync-stat"><b>Last sync</b><strong id="cmsLastSync">—</strong></div>
+        <div class="sync-stat"><b>Fetched</b><strong id="cmsFetched">0</strong></div>
+        <div class="sync-stat"><b>Updated</b><strong id="cmsUpdated">0</strong></div>
+        <div class="sync-stat"><b>Errors</b><strong id="cmsErrors">0</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>CMS → Dashboard Field Mapping</h3>
+    <div class="sub">Map the CMS JSON field names to the platform's performance indicators. These defaults can be edited once the actual CMS API schema is known.</div>
+    <div style="overflow:auto;margin-top:12px">
+      <table class="mapping-table">
+        <thead><tr><th>Department</th><th>Dashboard field</th><th>CMS JSON field</th></tr></thead>
+        <tbody id="cmsMappingBody"></tbody>
+      </table>
+    </div>
+    <div class="actions" style="margin-top:12px"><button id="saveCmsMapping" class="btn secondary">Save field mapping</button></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Expected API Response</h3>
+    <div class="sub">The connector accepts either an array of monthly records or an object containing a <b>data</b>, <b>results</b>, or <b>records</b> array.</div>
+    <pre class="code-hint">[
+  {
+    "year": 2026,
+    "month": 9,
+    "patients": 245,
+    "pharmacy_services": 221,
+    "pharmacy_otc": 150,
+    "pharmacy_prescriptions": 71,
+    "lab_services": 70,
+    "doctor_consultations": 82
+  }
+]</pre>
+  </div>
+</section>
+
+<section id="records" class="tab">
+  <div class="topbar"><div><h2>Performance Records</h2><p>Review and export historical data.</p></div></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      <div class="sub">Stored locally in this browser.</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn secondary" id="goReport">Open Monthly Report</button><button class="btn secondary" id="openDeptScorecards">Open Dept. Scorecards</button><button class="btn secondary" id="exportCsv">Export CSV</button><button class="btn secondary" id="exportJson">Backup JSON</button></div>
+    </div>
+    <div style="overflow:auto"><table><thead><tr><th>Period</th><th>Patients</th><th>Revenue</th><th>Expenses</th><th>Satisfaction</th><th>Waiting</th><th>Lab</th><th>Pharmacy</th><th>Doctor</th><th>Nursing</th><th>Source</th><th>Status</th><th></th></tr></thead><tbody id="recordsBody"></tbody></table></div>
+  </div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const initial=[
+ {
+  "month": 1,
+  "year": 2026,
+  "patients": 320,
+  "newVisits": 93,
+  "revisits": 227,
+  "selfDiscovery": 39,
+  "socialMedia": 13,
+  "referral": 40,
+  "marketing": 0,
+  "pharmacy": 216,
+  "doctor": 112,
+  "nursing": 100,
+  "lab": 65,
+  "homecare": 0,
+  "otc": 119,
+  "rxDispensed": 97,
+  "nursingProcedures": 46,
+  "doctorProcedures": 26,
+  "cwc": 14,
+  "fp": 7,
+  "anc": 5,
+  "ultrasound": 2,
+  "labWalkin": 20,
+  "labClinician": 45,
+  "complaints": 0,
+  "notes": "Imported from January 2026 clinic report. No client complaints were recorded. Stock-taking was conducted every Monday. Recommendations included promoting ANC/ultrasound, maintaining restocking of essential supplies, and increasing marketing."
+ },
+ {
+  "month": 2,
+  "year": 2026,
+  "patients": 326,
+  "newVisits": 115,
+  "revisits": 211,
+  "selfDiscovery": 27,
+  "socialMedia": 36,
+  "referral": 24,
+  "marketing": 30,
+  "pharmacy": 221,
+  "doctor": 100,
+  "nursing": 97,
+  "lab": 64,
+  "homecare": 0,
+  "otc": 116,
+  "rxDispensed": 105,
+  "nursingProcedures": 31,
+  "doctorProcedures": 31,
+  "cwc": 26,
+  "fp": 3,
+  "anc": 4,
+  "ultrasound": 2,
+  "labWalkin": 28,
+  "labClinician": 36,
+  "complaints": 0,
+  "notes": "Imported from February 2026 clinic report. A medical camp held on 14–15 February contributed 45 patient visits. The report notes that some drugs were out of stock on some days, but does not quantify the number of stock-out items."
+ },
+ {
+  "month": 3,
+  "year": 2026,
+  "patients": 275,
+  "newVisits": 84,
+  "revisits": 191,
+  "selfDiscovery": 28,
+  "socialMedia": 25,
+  "referral": 23,
+  "marketing": 8,
+  "pharmacy": 272,
+  "doctor": 118,
+  "nursing": 98,
+  "lab": 63,
+  "homecare": 3,
+  "otc": 156,
+  "rxDispensed": 113,
+  "nursingProcedures": 35,
+  "doctorProcedures": 32,
+  "cwc": 15,
+  "fp": 12,
+  "anc": 1,
+  "ultrasound": 3,
+  "labWalkin": 21,
+  "labClinician": 42,
+  "complaints": 0,
+  "stockouts": 0,
+  "notes": "Imported from March 2026 clinic report. No complaints were reported, inventory records were maintained, and the report explicitly states there were no pharmacy stock-outs during the month."
+ },
+ {
+  "month": 4,
+  "year": 2026,
+  "patients": 224,
+  "newVisits": 73,
+  "revisits": 151,
+  "selfDiscovery": 31,
+  "socialMedia": 18,
+  "referral": 23,
+  "marketing": 1,
+  "pharmacy": 212,
+  "doctor": 93,
+  "nursing": 62,
+  "lab": 46,
+  "homecare": 2,
+  "otc": 116,
+  "rxDispensed": 95,
+  "nursingProcedures": 25,
+  "doctorProcedures": 19,
+  "cwc": 14,
+  "fp": 4,
+  "anc": 0,
+  "ultrasound": 0,
+  "labWalkin": 19,
+  "labClinician": 27,
+  "complaints": 0,
+  "notes": "Imported from April 2026 clinic report. No complaints were reported and inventory records were maintained. The main recommendation was to consider adding other insurance providers to improve access."
+ },
+ {
+  "month": 5,
+  "year": 2026,
+  "patients": 238,
+  "newVisits": 73,
+  "revisits": 165,
+  "selfDiscovery": 34,
+  "socialMedia": 17,
+  "referral": 18,
+  "marketing": 5,
+  "pharmacy": 254,
+  "doctor": 115,
+  "nursing": 69,
+  "lab": 51,
+  "homecare": 1,
+  "otc": 155,
+  "rxDispensed": 98,
+  "nursingProcedures": 19,
+  "doctorProcedures": 25,
+  "cwc": 16,
+  "fp": 8,
+  "anc": 1,
+  "ultrasound": 0,
+  "labWalkin": 17,
+  "labClinician": 34,
+  "complaints": 0,
+  "stockouts": 2,
+  "notes": "Imported from May 2026 clinic report. Two named pharmacy stock-outs were reported (Cetirizine and Ibuprofen) toward month-end, without disruption to service because alternatives were available. Recommendations included reviewing ANC pricing and maintaining monthly restocking."
+ },
+ {
+  "month": 6,
+  "year": 2026,
+  "patients": 221,
+  "newVisits": 74,
+  "revisits": 147,
+  "selfDiscovery": 37,
+  "socialMedia": 23,
+  "referral": 13,
+  "marketing": 1,
+  "pharmacy": 226,
+  "doctor": 101,
+  "nursing": 87,
+  "lab": 66,
+  "homecare": 3,
+  "otc": 138,
+  "rxDispensed": 85,
+  "nursingProcedures": 32,
+  "doctorProcedures": 24,
+  "cwc": 16,
+  "fp": 10,
+  "anc": 3,
+  "ultrasound": 2,
+  "labWalkin": 22,
+  "labClinician": 44,
+  "complaints": 0,
+  "notes": "Imported from June 2026 clinic report. No client complaints were recorded. Stock-taking was conducted at month-end and the recommendation was to continue monthly restocking of drugs and essential supplies."
+ },
+ {
+  "month": 7,
+  "year": 2026,
+  "patients": 322,
+  "newVisits": 83,
+  "revisits": 239,
+  "selfDiscovery": 25,
+  "socialMedia": 29,
+  "referral": 23,
+  "marketing": 6,
+  "pharmacy": 276,
+  "doctor": 109,
+  "nursing": 97,
+  "lab": 77,
+  "homecare": 2,
+  "otc": 161,
+  "rxDispensed": 113,
+  "nursingProcedures": 45,
+  "doctorProcedures": 17,
+  "cwc": 24,
+  "fp": 10,
+  "anc": 1,
+  "ultrasound": 0,
+  "labWalkin": 31,
+  "labClinician": 46,
+  "notes": "Imported from July 2026 clinic report. The clinic experienced delays in stocking medicines and essential laboratory supplies during the first weeks of the month, leading to missed sales opportunities and temporary service constraints. Recommendations focused on inventory planning, social media, marketing and patient education on laboratory investigations."
+ },
+ {
+  "month": 8,
+  "year": 2026,
+  "patients": 236,
+  "newVisits": 71,
+  "revisits": 165,
+  "selfDiscovery": 28,
+  "socialMedia": 20,
+  "referral": 23,
+  "marketing": 0,
+  "pharmacy": 207,
+  "doctor": 68,
+  "nursing": 69,
+  "lab": 66,
+  "homecare": 1,
+  "otc": 143,
+  "rxDispensed": 64,
+  "nursingProcedures": 39,
+  "doctorProcedures": 12,
+  "cwc": 11,
+  "fp": 5,
+  "anc": 2,
+  "ultrasound": 0,
+  "labWalkin": 37,
+  "labClinician": 29,
+  "notes": "Imported from August 2026 clinic report. The report highlights the need to strengthen marketing, patient acquisition and retention, cross-selling/internal referrals, and promotion of laboratory services."
+ }
+];
+const storeKey="accucare_monitoring_v2";
+const targetKey="accucare_kpi_targets_v1";
+const roleKey="accucare_role_v1";
+const auditKey="accucare_audit_v1";
+const deptTargetKey="accucare_department_targets_v1";
+const deptActionKey="accucare_department_actions_v1";
+const sessionKey="accucare_session_v1";
+const cmsConfigKey="accucare_cms_config_v1";
+const cmsMappingKey="accucare_cms_mapping_v1";
+const reportSeedKey="accucare_report_seed_2026_jan_aug_v1";
+const defaultTargets={
+ satisfaction:{label:"Patient satisfaction",direction:"high",target:90,tolerance:5,unit:"%"},
+ waitingTime:{label:"Average waiting time",direction:"low",target:20,tolerance:10,unit:"min"},
+ collectionRate:{label:"Revenue collection rate",direction:"high",target:95,tolerance:10,unit:"%"},
+ criticalAvailability:{label:"Critical stock availability",direction:"high",target:95,tolerance:5,unit:"%"},
+ equipmentUptime:{label:"Essential equipment operational",direction:"high",target:95,tolerance:5,unit:"%"},
+ auditCompliance:{label:"Clinical audit compliance",direction:"high",target:95,tolerance:5,unit:"%"},
+ complaintResolution:{label:"Complaint resolution rate",direction:"high",target:90,tolerance:10,unit:"%"},
+ noShowRate:{label:"Appointment no-show rate",direction:"low",target:10,tolerance:5,unit:"%"},
+ stockouts:{label:"Stock-out items",direction:"low",target:0,tolerance:3,unit:"items"},
+ returns72Rate:{label:"72-hour return rate",direction:"low",target:5,tolerance:3,unit:"%"},
+ followupRate:{label:"Follow-up compliance",direction:"high",target:85,tolerance:10,unit:"%"},
+ documentationRate:{label:"Clinical documentation completeness",direction:"high",target:95,tolerance:5,unit:"%"}
+};
+let targets=JSON.parse(localStorage.getItem(targetKey)||"null")||JSON.parse(JSON.stringify(defaultTargets));
+
+const defaultDeptTargets={
+ doctor:{label:"OPD / Doctor",volume:100,revenue:150000,rps:1500,tolerance:15},
+ pharmacy:{label:"Pharmacy",volume:250,revenue:250000,rps:1000,tolerance:15},
+ lab:{label:"Laboratory",volume:100,revenue:120000,rps:1200,tolerance:15},
+ nursing:{label:"Nursing",volume:100,revenue:80000,rps:800,tolerance:15},
+ mch:{label:"MCH",volume:60,revenue:60000,rps:1000,tolerance:15},
+ homecare:{label:"Home Care",volume:20,revenue:80000,rps:4000,tolerance:15},
+ physiotherapy:{label:"Physiotherapy",volume:50,revenue:100000,rps:2000,tolerance:15},
+ optical:{label:"Optical",volume:40,revenue:120000,rps:3000,tolerance:15},
+ radiology:{label:"Radiology",volume:50,revenue:150000,rps:3000,tolerance:15}
+};
+let deptTargets=JSON.parse(localStorage.getItem(deptTargetKey)||"null")||JSON.parse(JSON.stringify(defaultDeptTargets));
+let deptActions=JSON.parse(localStorage.getItem(deptActionKey)||"{}");
+
+let audit=JSON.parse(localStorage.getItem(auditKey)||"[]");
+let data=JSON.parse(localStorage.getItem(storeKey)||"null")||[];
+const reportSeedApplied=localStorage.getItem(reportSeedKey)==="1";
+
+// Merge report-derived Jan–Aug 2026 values into any existing browser data.
+// Existing user-entered nonblank values are preserved; missing fields are filled from the reports.
+initial.forEach(seed=>{
+  const i=data.findIndex(d=>Number(d.year)===Number(seed.year)&&Number(d.month)===Number(seed.month));
+  if(i<0){
+    data.push({...seed,workflowStatus:"Draft",dataSource:"Monthly clinic report"});
+  }else{
+    const existing=data[i];
+    Object.entries(seed).forEach(([k,v])=>{
+      if(existing[k]===undefined || existing[k]===null || existing[k]==="") existing[k]=v;
+    });
+    existing.dataSource=existing.dataSource||"Monthly clinic report";
+  }
+});
+localStorage.setItem(reportSeedKey,"1");
+data=data.map(d=>({...d,workflowStatus:d.workflowStatus||"Draft"}));
+const money=v=>v==null?"—":"KES "+Number(v).toLocaleString();
+const nfmt=v=>v==null?"—":Number(v).toLocaleString();
+const pct=v=>v==null?"—":Number(v).toFixed(1)+"%";
+function save(){localStorage.setItem(storeKey,JSON.stringify(data))}
+function saveTargetsData(){localStorage.setItem(targetKey,JSON.stringify(targets))}
+function saveAudit(){localStorage.setItem(auditKey,JSON.stringify(audit))}
+function addAudit(action,record,comment=""){
+  audit.unshift({ts:new Date().toISOString(),role:localStorage.getItem(roleKey)||"Administrator",action,record,comment});
+  audit=audit.slice(0,100);saveAudit();
+}
+save();
+
+
+const defaultCmsMapping=[
+  ["Facility","patients","patients"],
+  ["Facility","newVisits","new_visits"],
+  ["Facility","revisits","revisits"],
+  ["Facility","selfDiscovery","self_discovery"],
+  ["Facility","socialMedia","social_media"],
+  ["Facility","referral","referrals"],
+  ["Facility","marketing","marketing"],
+  ["OPD / Doctor","doctor","doctor_consultations"],
+  ["OPD / Doctor","procedures","minor_procedures"],
+  ["OPD / Doctor","revConsult","consultation_revenue"],
+  ["Pharmacy","pharmacy","pharmacy_services"],
+  ["Pharmacy","otc","pharmacy_otc"],
+  ["Pharmacy","rxDispensed","pharmacy_prescriptions"],
+  ["Pharmacy","stockouts","pharmacy_stockouts"],
+  ["Pharmacy","criticalAvailability","critical_stock_availability"],
+  ["Pharmacy","revPharmacy","pharmacy_revenue"],
+  ["Laboratory","lab","lab_services"],
+  ["Laboratory","labWalkin","lab_walkins"],
+  ["Laboratory","labClinician","lab_clinician_requests"],
+  ["Laboratory","revLab","lab_revenue"],
+  ["Nursing","nursing","nursing_services"],
+  ["Nursing","nursingProcedures","nursing_procedures"],
+  ["Nursing","doctorProcedures","doctor_requested_nursing"],
+  ["Nursing","revNursing","nursing_revenue"],
+  ["MCH","anc","anc"],
+  ["MCH","pnc","pnc"],
+  ["MCH","cwc","cwc"],
+  ["MCH","fp","family_planning"],
+  ["MCH","immunization","immunizations"],
+  ["MCH","ultrasound","ultrasound"],
+  ["MCH","revMch","mch_revenue"],
+  ["Home Care","homecare","homecare_visits"],
+  ["Home Care","revHomecare","homecare_revenue"],
+  ["Physiotherapy","physiotherapy","physiotherapy_visits"],
+  ["Physiotherapy","physioAssessments","physio_assessments"],
+  ["Physiotherapy","physioSessions","physio_sessions"],
+  ["Physiotherapy","revPhysio","physiotherapy_revenue"],
+  ["Optical","optical","optical_services"],
+  ["Optical","opticalExams","optical_exams"],
+  ["Optical","opticalOrders","optical_orders"],
+  ["Optical","revOptical","optical_revenue"],
+  ["Radiology","radiology","radiology_services"],
+  ["Radiology","xray","xray"],
+  ["Radiology","radiologyUltrasound","radiology_ultrasound"],
+  ["Radiology","radiologyReports","radiology_reports"],
+  ["Radiology","revRadiology","radiology_revenue"],
+  ["Facility","revenue","total_revenue"],
+  ["Facility","cashCollected","cash_collected"],
+  ["Facility","expenses","operating_expenses"],
+  ["Facility","receivables","receivables"],
+  ["Facility","satisfaction","satisfaction"],
+  ["Facility","waitingTime","waiting_time"],
+  ["Facility","complaints","complaints"],
+  ["Facility","complaintsResolved","complaints_resolved"]
+];
+let cmsConfig=JSON.parse(localStorage.getItem(cmsConfigKey)||"null")||{
+  baseUrl:"https://cms.accucarehealth.org",
+  endpoint:"",
+  authMode:"none",
+  proxyUrl:"",
+  refreshMinutes:0,
+  mergePolicy:"fill",
+  updatedField:"updated_at",
+  monthField:"month",
+  yearField:"year",
+  lastSync:null
+};
+let cmsMapping=JSON.parse(localStorage.getItem(cmsMappingKey)||"null")||defaultCmsMapping.map(x=>[...x]);
+let cmsTimer=null;
+
+function renderIntegration(){
+  cmsBaseUrl.value=cmsConfig.baseUrl||"";
+  cmsEndpoint.value=cmsConfig.endpoint||"";
+  cmsAuthMode.value=cmsConfig.authMode||"none";
+  cmsProxyUrl.value=cmsConfig.proxyUrl||"";
+  cmsRefreshMinutes.value=String(cmsConfig.refreshMinutes||0);
+  cmsMergePolicy.value=cmsConfig.mergePolicy||"fill";
+  cmsUpdatedField.value=cmsConfig.updatedField||"updated_at";
+  cmsMonthField.value=cmsConfig.monthField||"month";
+  cmsYearField.value=cmsConfig.yearField||"year";
+  cmsLastSync.textContent=cmsConfig.lastSync?new Date(cmsConfig.lastSync).toLocaleString():"—";
+  cmsMappingBody.innerHTML=cmsMapping.map((r,i)=>`<tr data-i="${i}">
+    <td>${r[0]}</td><td><code>${r[1]}</code></td><td><input value="${r[2]||""}"></td>
+  </tr>`).join("");
+  configureCmsTimer();
+}
+function collectCmsConfig(){
+  cmsConfig={
+    ...cmsConfig,
+    baseUrl:cmsBaseUrl.value.trim().replace(/\/+$/,""),
+    endpoint:cmsEndpoint.value.trim(),
+    authMode:cmsAuthMode.value,
+    proxyUrl:cmsProxyUrl.value.trim(),
+    refreshMinutes:Number(cmsRefreshMinutes.value)||0,
+    mergePolicy:cmsMergePolicy.value,
+    updatedField:cmsUpdatedField.value.trim()||"updated_at",
+    monthField:cmsMonthField.value.trim()||"month",
+    yearField:cmsYearField.value.trim()||"year"
+  };
+  localStorage.setItem(cmsConfigKey,JSON.stringify(cmsConfig));
+}
+function collectCmsMapping(){
+  document.querySelectorAll("#cmsMappingBody tr").forEach(tr=>{
+    const i=Number(tr.dataset.i);
+    cmsMapping[i][2]=tr.querySelector("input").value.trim();
+  });
+  localStorage.setItem(cmsMappingKey,JSON.stringify(cmsMapping));
+}
+function cmsRequestUrl(){
+  if(cmsConfig.authMode==="proxy"){
+    if(!cmsConfig.proxyUrl)throw new Error("Proxy URL is required.");
+    return cmsConfig.proxyUrl;
+  }
+  if(!cmsConfig.endpoint)throw new Error("CMS API endpoint is required.");
+  return cmsConfig.baseUrl + (cmsConfig.endpoint.startsWith("/")?"":"/") + cmsConfig.endpoint;
+}
+async function fetchCmsJson(){
+  collectCmsConfig();
+  const url=cmsRequestUrl();
+  const headers={"Accept":"application/json"};
+  if(cmsConfig.authMode==="bearer"){
+    const token=cmsToken.value.trim();
+    if(!token)throw new Error("Bearer token is required.");
+    headers["Authorization"]="Bearer "+token;
+  }
+  const opts={method:"GET",headers};
+  if(cmsConfig.authMode==="cookie")opts.credentials="include";
+  const res=await fetch(url,opts);
+  if(!res.ok)throw new Error(`CMS returned HTTP ${res.status}`);
+  const raw=await res.json();
+  const rows=Array.isArray(raw)?raw:(raw.data||raw.results||raw.records);
+  if(!Array.isArray(rows))throw new Error("CMS response does not contain a record array.");
+  return rows;
+}
+function mapCmsRecord(src){
+  const out={};
+  const monthVal=src[cmsConfig.monthField],yearVal=src[cmsConfig.yearField];
+  out.month=Number(monthVal);out.year=Number(yearVal);
+  if(!out.month||!out.year)return null;
+  cmsMapping.forEach(([dept,dest,source])=>{
+    if(!source)return;
+    const v=src[source];
+    if(v!==undefined && v!==null && v!==""){
+      const num=Number(v);
+      out[dest]=Number.isFinite(num)?num:v;
+    }
+  });
+  out.cmsUpdatedAt=src[cmsConfig.updatedField]||null;
+  out.dataSource="Accucare CMS";
+  out.workflowStatus=out.workflowStatus||"Draft";
+  return out;
+}
+function mergeCmsRows(rows){
+  let updated=0,errors=0;
+  rows.forEach(src=>{
+    try{
+      const incoming=mapCmsRecord(src);
+      if(!incoming){errors++;return}
+      const i=data.findIndex(d=>Number(d.year)===incoming.year&&Number(d.month)===incoming.month);
+      if(i<0){data.push(incoming);updated++;return}
+      const existing=data[i];
+      const policy=cmsConfig.mergePolicy;
+      if(policy==="newer"){
+        const a=existing.cmsUpdatedAt?Date.parse(existing.cmsUpdatedAt):0;
+        const b=incoming.cmsUpdatedAt?Date.parse(incoming.cmsUpdatedAt):Date.now();
+        if(b<a)return;
+      }
+      Object.entries(incoming).forEach(([k,v])=>{
+        if(k==="month"||k==="year")return;
+        if(policy==="overwrite"||policy==="newer"||existing[k]===undefined||existing[k]===null||existing[k]===""){
+          existing[k]=v;
+        }
+      });
+      updated++;
+    }catch(e){errors++}
+  });
+  save();
+  return {updated,errors};
+}
+async function doCmsSync(testOnly=false){
+  cmsConnectionStatus.className="integration-status warn";
+  cmsConnectionStatus.innerHTML='<span class="dot"></span><span>Connecting to CMS…</span>';
+  try{
+    const rows=await fetchCmsJson();
+    cmsFetched.textContent=rows.length;
+    if(testOnly){
+      cmsConnectionStatus.className="integration-status ok";
+      cmsConnectionStatus.innerHTML=`<span class="dot"></span><span>Connection successful. ${rows.length} record(s) available.</span>`;
+      return;
+    }
+    const result=mergeCmsRows(rows);
+    cmsUpdated.textContent=result.updated;
+    cmsErrors.textContent=result.errors;
+    cmsConfig.lastSync=new Date().toISOString();
+    localStorage.setItem(cmsConfigKey,JSON.stringify(cmsConfig));
+    cmsLastSync.textContent=new Date(cmsConfig.lastSync).toLocaleString();
+    cmsConnectionStatus.className=result.errors?"integration-status warn":"integration-status ok";
+    cmsConnectionStatus.innerHTML=`<span class="dot"></span><span>Sync complete: ${result.updated} updated, ${result.errors} error(s).</span>`;
+    renderDashboard();renderRecords();
+    showToast("CMS data synchronized");
+  }catch(err){
+    cmsErrors.textContent=Number(cmsErrors.textContent||0)+1;
+    cmsConnectionStatus.className="integration-status bad";
+    cmsConnectionStatus.innerHTML=`<span class="dot"></span><span>${err.message}. If this is a browser CORS/authentication issue, use the server-side proxy mode.</span>`;
+  }
+}
+function configureCmsTimer(){
+  if(cmsTimer)clearInterval(cmsTimer);
+  const mins=Number(cmsConfig.refreshMinutes)||0;
+  if(mins>0)cmsTimer=setInterval(()=>doCmsSync(false),mins*60*1000);
+}
+
+let currentSession=JSON.parse(localStorage.getItem(sessionKey)||"null");
+
+function departmentLabel(key){
+  const labels={
+    all:"All Departments / Management",
+    doctor:"OPD / Doctor",
+    pharmacy:"Pharmacy",
+    lab:"Laboratory",
+    nursing:"Nursing",
+    mch:"MCH",
+    homecare:"Home Care",
+    physiotherapy:"Physiotherapy",
+    optical:"Optical",
+    radiology:"Radiology"
+  };
+  return labels[key]||key;
+}
+function departmentIcon(key){
+  return ({doctor:"🩺",pharmacy:"💊",lab:"🧪",nursing:"✚",mch:"👶",homecare:"⌂",physiotherapy:"♿",optical:"◉",radiology:"⊙",all:"◎"})[key]||"◎";
+}
+function isManagementSession(){
+  return currentSession && (currentSession.department==="all" || ["Administrator","Manager"].includes(currentSession.role));
+}
+function canEdit(){
+  return currentSession && currentSession.role!=="Viewer";
+}
+function applySession(){
+  if(!currentSession){
+    loginShell.style.display="flex";
+    sessionCard.style.display="none";
+    return;
+  }
+  loginShell.style.display="none";
+  sessionCard.style.display="block";
+  sessionName.textContent=currentSession.name||"User";
+  sessionRole.textContent=`${currentSession.role} • ${departmentLabel(currentSession.department)}`;
+
+  // Navigation permissions
+  const mgmt=isManagementSession();
+  document.querySelectorAll(".nav-admin").forEach(el=>el.style.display=mgmt?"":"none");
+  const entryBtn=document.querySelector('.nav-entry');
+  if(entryBtn)entryBtn.style.display=canEdit()?"":"none";
+
+  // Department-scoped form rendering
+  renderScopedEntry();
+
+  // Prevent department users from seeing all-department entry by default
+  if(!mgmt){
+    const active=document.querySelector("nav button.active");
+    if(active && ["targets","depttargets","workflow"].includes(active.dataset.tab)){
+      document.querySelector('.nav-entry')?.click();
+    }
+  }
+}
+function renderScopedEntry(){
+  if(!currentSession)return;
+  const dept=currentSession.department;
+  const mgmt=isManagementSession();
+
+  document.body.classList.toggle("department-session",!mgmt);
+
+  entryScopeIcon.textContent=departmentIcon(dept);
+  entryScopeTitle.textContent=mgmt ? "Management Data Entry" : `${departmentLabel(dept)} Data Entry`;
+  entryScopeText.textContent=mgmt
+    ? "Management access can view and complete all departmental and facility-wide forms."
+    : `You are signed in to ${departmentLabel(dept)}. Only this department's monthly entry form is available.`;
+  entryScopeBadge.textContent=mgmt ? "All departments" : `${departmentLabel(dept)} only`;
+
+  // Department form header.
+  deptFormHeader.style.display=mgmt ? "none" : "flex";
+  deptFormHeaderIcon.textContent=departmentIcon(dept);
+  deptFormHeaderTitle.textContent=`${departmentLabel(dept)} Monthly Entry`;
+  deptFormHeaderSub.textContent=`Only ${departmentLabel(dept)} indicators can be entered or changed in this session.`;
+
+  // Hide every scoped fieldset first, then explicitly allow only shared + current department.
+  document.querySelectorAll("#entry fieldset.department-form").forEach(fs=>{
+    const scopes=(fs.dataset.scope||"").trim().split(/\s+/).filter(Boolean);
+    const show=mgmt || scopes.includes("shared") || scopes.includes("all") || scopes.includes(dept) || (mgmt && scopes.includes("admin"));
+    fs.classList.toggle("active",show);
+  });
+
+  // Within mixed fieldsets (department utilization/revenue), expose only current department's fields.
+  document.querySelectorAll("#entry .dept-field[data-field-scope]").forEach(el=>{
+    const show=mgmt || el.dataset.fieldScope===dept;
+    el.classList.toggle("active",show);
+  });
+
+  // Hide irrelevant section headings.
+  document.querySelectorAll("#entry .scoped-section-title").forEach(el=>{
+    const scopes=(el.dataset.sectionScope||"").trim().split(/\s+/).filter(Boolean);
+    const show=mgmt || scopes.includes(dept) || (mgmt && scopes.includes("admin"));
+    el.classList.toggle("active",show);
+  });
+
+  // In a departmental session, remove empty mixed fieldsets defensively.
+  if(!mgmt){
+    document.querySelectorAll("#entry fieldset.department-form.active").forEach(fs=>{
+      const scopedChildren=[...fs.querySelectorAll(".dept-field[data-field-scope]")];
+      if(scopedChildren.length && !scopedChildren.some(x=>x.classList.contains("active"))){
+        fs.classList.remove("active");
+      }
+    });
+  }
+
+  // Viewer cannot edit.
+  document.querySelectorAll("#entry input,#entry select,#entry textarea,#entry button").forEach(el=>{
+    if(el.id==="month" || el.id==="year") { el.disabled=!canEdit(); return; }
+    el.disabled=!canEdit();
+  });
+}
+function startSession(){
+  const name=loginName.value.trim();
+  if(!name){alert("Please enter your name.");return}
+  if(!["Administrator","Manager"].includes(loginRole.value) && loginDepartment.value==="all"){
+    alert("Department users must select their assigned department.");
+    return;
+  }
+  currentSession={
+    name,
+    role:loginRole.value,
+    department:loginDepartment.value,
+    startedAt:new Date().toISOString()
+  };
+  localStorage.setItem(sessionKey,JSON.stringify(currentSession));
+  localStorage.setItem(roleKey,currentSession.role);
+  applySession();
+  // Department users land directly on data entry
+  if(!isManagementSession() && canEdit()){
+    document.querySelector('.nav-entry')?.click();
+  }
+}
+function clearSession(){
+  currentSession=null;
+  localStorage.removeItem(sessionKey);
+  loginName.value="";
+  loginShell.style.display="flex";
+  sessionCard.style.display="none";
+}
+loginBtn.onclick=startSession;
+switchUserBtn.onclick=clearSession;
+
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active");
+  if(b.dataset.tab==="dashboard")applySession();
+configureCmsTimer();
+renderDashboard();
+  if(b.dataset.tab==="department")renderDepartment();
+  if(b.dataset.tab==="trends")renderTrends();
+  if(b.dataset.tab==="targets")renderTargets();
+  if(b.dataset.tab==="depttargets")renderDeptTargets();
+  if(b.dataset.tab==="workflow")renderWorkflow();
+  if(b.dataset.tab==="integration")renderIntegration();
+  if(b.dataset.tab==="reports")renderReportTab();
+  if(b.dataset.tab==="deptscorecards")renderDeptScorecardsTab();
+  if(b.dataset.tab==="records")renderRecords();
+});
+const monthSel=document.getElementById("month");monthNames.forEach((m,i)=>monthSel.innerHTML+=`<option value="${i+1}">${m}</option>`);monthSel.value=9;
+function latest(){return [...data].sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month)).at(-1)}
+function previousOf(d){return [...data].filter(x=>(x.year*12+x.month)<(d.year*12+d.month)).sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month)).at(-1)}
+function change(a,b){return(a==null||b==null||b===0)?null:(a-b)/b*100}
+function setDelta(id,a,p,field){
+ const el=document.getElementById(id),v=change(a,p?.[field]); if(v==null){el.textContent="No prior comparison";el.className="delta neutral";return}
+ el.textContent=`${v<0?"▼":"▲"} ${Math.abs(v).toFixed(1)}% vs ${monthNames[p.month-1]}`;el.className="delta "+(v<0?"bad":"good")
+}
+function setup(id,h=265){const c=document.getElementById(id),d=window.devicePixelRatio||1,w=c.parentElement.clientWidth-34;c.style.height=h+"px";c.width=w*d;c.height=h*d;const x=c.getContext("2d");x.setTransform(d,0,0,d,0,0);return{c,x,w,h}}
+function rr(x,a,b,c,d,r){x.beginPath();x.roundRect(a,b,c,d,r);x.fill()}
+function bar(id,labels,vals,formatter=v=>Math.round(v)){
+ const {x,w,h}=setup(id),p={l:52,r:12,t:20,b:52},cw=w-p.l-p.r,ch=h-p.t-p.b,v=vals.map(z=>z??0),mx=Math.max(...v,1)*1.15;x.clearRect(0,0,w,h);x.font="10px Open Sans, Arial, sans-serif";x.fillStyle="#72718b";x.textAlign="right";
+ for(let i=0;i<=4;i++){let y=p.t+ch-i*ch/4;x.fillText(formatter(mx*i/4),p.l-7,y+3);x.strokeStyle="#efedf6";x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke()}
+ let bw=cw/labels.length*.56;
+ labels.forEach((lab,i)=>{let xx=p.l+(i+.5)*cw/labels.length-bw/2,bh=v[i]/mx*ch,yy=p.t+ch-bh;x.fillStyle=i===0?"#5b3dbb":"#8b78d6";rr(x,xx,yy,bw,bh,7);x.fillStyle="#5a5670";x.textAlign="center";x.font="10px Open Sans, Arial, sans-serif";x.fillText(lab,xx+bw/2,h-26);x.fillStyle="#24233a";x.font="700 10px Roboto, Open Sans, Arial, sans-serif";x.fillText(formatter(v[i]),xx+bw/2,yy-6)})
+}
+function line(id,pts){
+ const {x,w,h}=setup(id),p={l:45,r:18,t:20,b:42},cw=w-p.l-p.r,ch=h-p.t-p.b,vals=pts.map(q=>q.v).filter(v=>v!=null),mx=Math.max(...vals,1)*1.12;x.clearRect(0,0,w,h);x.font="10px Open Sans, Arial, sans-serif";x.fillStyle="#72718b";x.textAlign="right";
+ for(let i=0;i<=4;i++){let y=p.t+ch-i*ch/4;x.fillText(Math.round(mx*i/4),p.l-7,y+3);x.strokeStyle="#efedf6";x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke()}
+ const xs=pts.map((q,i)=>p.l+(pts.length===1?cw/2:i*cw/(pts.length-1)));x.strokeStyle="#5b3dbb";x.lineWidth=3;x.beginPath();
+ pts.forEach((q,i)=>{if(q.v==null)return;let y=p.t+ch-q.v/mx*ch;if(i===0)x.moveTo(xs[i],y);else x.lineTo(xs[i],y)});x.stroke();
+ pts.forEach((q,i)=>{if(q.v==null)return;let y=p.t+ch-q.v/mx*ch;x.fillStyle="#5b3dbb";x.beginPath();x.arc(xs[i],y,4.5,0,Math.PI*2);x.fill();x.fillStyle="#5a5670";x.textAlign="center";x.font="10px Open Sans, Arial, sans-serif";x.fillText(q.label,xs[i],h-18);x.fillStyle="#24233a";x.font="700 10px Roboto, Open Sans, Arial, sans-serif";x.fillText(q.v,xs[i],y-9)})
+}
+
+function valid(v){return v!==null&&v!==undefined&&Number.isFinite(Number(v))}
+function periodLabel(d){return monthNames[d.month-1].slice(0,3)+" "+String(d.year).slice(-2)}
+
+function multiLine(id, rows, series, options={}){
+  const {x,w,h}=setup(id, options.height||280);
+  const p={l:56,r:18,t:28,b:48},cw=w-p.l-p.r,ch=h-p.t-p.b;
+  x.clearRect(0,0,w,h);
+
+  const all=rows.flatMap(r=>series.map(s=>valid(r[s.key])?Number(r[s.key]):null)).filter(valid);
+  if(!all.length){
+    x.fillStyle="#72718b";x.font="12px Open Sans, Arial, sans-serif";x.textAlign="center";
+    x.fillText("No trend data available yet",w/2,h/2);
+    return;
+  }
+  let min=options.zeroBase===false?Math.min(...all):0;
+  let max=Math.max(...all);
+  if(max===min)max=min+1;
+  const span=max-min;
+  max += span*.12;
+
+  x.font="10px Open Sans, Arial, sans-serif";x.fillStyle="#72718b";x.textAlign="right";
+  for(let i=0;i<=4;i++){
+    let y=p.t+ch-i*ch/4, val=min+(max-min)*i/4;
+    let label=options.percent?val.toFixed(0)+"%":
+              options.money?(val>=1000000?(val/1000000).toFixed(1)+"m":val>=1000?Math.round(val/1000)+"k":Math.round(val)):
+              Math.round(val);
+    x.fillText(label,p.l-7,y+3);
+    x.strokeStyle="#efedf6";x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke();
+  }
+
+  const xs=rows.map((r,i)=>p.l+(rows.length===1?cw/2:i*cw/(rows.length-1)));
+  const palette=["#5b3dbb","#2f80ed","#178f68","#d97706","#c2413b","#7c3aed"];
+  series.forEach((s,si)=>{
+    x.strokeStyle=palette[si%palette.length];x.lineWidth=2.5;x.beginPath();
+    let started=false;
+    rows.forEach((r,i)=>{
+      if(!valid(r[s.key]))return;
+      const v=Number(r[s.key]), yy=p.t+ch-(v-min)/(max-min)*ch;
+      if(!started){x.moveTo(xs[i],yy);started=true}else x.lineTo(xs[i],yy)
+    });
+    x.stroke();
+    rows.forEach((r,i)=>{
+      if(!valid(r[s.key]))return;
+      const v=Number(r[s.key]), yy=p.t+ch-(v-min)/(max-min)*ch;
+      x.fillStyle=palette[si%palette.length];x.beginPath();x.arc(xs[i],yy,3.5,0,Math.PI*2);x.fill();
+    });
+  });
+
+  // X labels
+  x.fillStyle="#5a5670";x.font="10px Open Sans, Arial, sans-serif";x.textAlign="center";
+  const step=Math.max(1,Math.ceil(rows.length/8));
+  rows.forEach((r,i)=>{if(i%step===0||i===rows.length-1)x.fillText(periodLabel(r),xs[i],h-20)});
+
+  // Legend
+  let lx=p.l,ly=13;x.font="10px Open Sans, Arial, sans-serif";x.textAlign="left";
+  series.forEach((s,si)=>{
+    x.fillStyle=palette[si%palette.length];x.fillRect(lx,ly-7,10,3);
+    x.fillStyle="#5a5670";x.fillText(s.label,lx+14,ly-3);
+    lx+=14+x.measureText(s.label).width+24;
+    if(lx>w-130){lx=p.l;ly+=13}
+  });
+}
+
+function latestRate(cur,prev){
+  const c=change(cur,prev);
+  return c==null?"—":`${c>=0?"+":""}${c.toFixed(1)}%`;
+}
+function calcCollection(d){
+  return valid(d.revenue)&&Number(d.revenue)>0&&valid(d.cashCollected)?Number(d.cashCollected)/Number(d.revenue)*100:null
+}
+function derivedRows(){
+  return [...data].sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month)).map(d=>({
+    ...d,
+    revenuePerPatient:(valid(d.revenue)&&valid(d.patients)&&Number(d.patients)>0)?Number(d.revenue)/Number(d.patients):null,
+    collectionRate:calcCollection(d),
+    safetyEvents:(Number(d.adverseEvents)||0)+(Number(d.medErrors)||0)+(Number(d.returns72h)||0)+(Number(d.infectionIncidents)||0)
+  }))
+}
+
+function renderTrends(){
+  const rows=derivedRows(),d=rows.at(-1),p=rows.length>1?rows.at(-2):null;
+  trendPatientGrowth.textContent=p?latestRate(d.patients,p.patients):"—";
+  trendRevenueGrowth.textContent=p?latestRate(d.revenue,p.revenue):"—";
+  trendCollectionRate.textContent=calcCollection(d)==null?"—":calcCollection(d).toFixed(1)+"%";
+  trendSatisfaction.textContent=valid(d.satisfaction)?Number(d.satisfaction).toFixed(1)+"%":"—";
+
+  multiLine("trendPatientsMulti",rows,[
+    {key:"patients",label:"Total patients"},
+    {key:"newVisits",label:"New visits"},
+    {key:"revisits",label:"Revisits"}
+  ]);
+
+  multiLine("trendDepartmentsMulti",rows,[
+    {key:"doctor",label:"Doctor"},
+    {key:"pharmacy",label:"Pharmacy"},
+    {key:"nursing",label:"Nursing"},
+    {key:"lab",label:"Laboratory"},
+    {key:"physiotherapy",label:"Physiotherapy"},
+    {key:"optical",label:"Optical"},
+    {key:"radiology",label:"Radiology"}
+  ]);
+
+  multiLine("trendFinancialMulti",rows,[
+    {key:"revenue",label:"Revenue"},
+    {key:"cashCollected",label:"Cash collected"},
+    {key:"expenses",label:"Expenses"}
+  ],{money:true});
+
+  multiLine("trendEfficiencyMulti",rows,[
+    {key:"revenuePerPatient",label:"Revenue / patient"},
+    {key:"collectionRate",label:"Collection rate"}
+  ],{zeroBase:true});
+
+  multiLine("trendExperienceMulti",rows,[
+    {key:"satisfaction",label:"Satisfaction %"},
+    {key:"waitingTime",label:"Waiting time"},
+    {key:"followupRate",label:"Follow-up %"}
+  ],{zeroBase:true});
+
+  multiLine("trendQualityMulti",rows,[
+    {key:"adverseEvents",label:"Adverse events"},
+    {key:"medErrors",label:"Medication errors"},
+    {key:"returns72h",label:"72h returns"},
+    {key:"infectionIncidents",label:"IPC incidents"}
+  ]);
+
+  multiLine("trendOperationsMulti",rows,[
+    {key:"equipmentUptime",label:"Equipment uptime %"},
+    {key:"criticalAvailability",label:"Critical stock %"},
+    {key:"clinicDowntime",label:"Clinic downtime"},
+    {key:"systemDowntime",label:"System downtime"}
+  ],{zeroBase:true});
+
+  renderTrendInsights(rows);
+}
+
+function slope(values){
+  const pts=values.map((v,i)=>valid(v)?[i,Number(v)]:null).filter(Boolean);
+  if(pts.length<2)return null;
+  const n=pts.length, sx=pts.reduce((a,b)=>a+b[0],0), sy=pts.reduce((a,b)=>a+b[1],0);
+  const sxy=pts.reduce((a,b)=>a+b[0]*b[1],0), sx2=pts.reduce((a,b)=>a+b[0]*b[0],0);
+  const den=n*sx2-sx*sx; return den===0?null:(n*sxy-sx*sy)/den;
+}
+function renderTrendInsights(rows){
+  const recent=rows.slice(-6),d=rows.at(-1),signals=[];
+  const ps=slope(recent.map(r=>r.patients)); if(ps!=null)signals.push(["Patient demand",ps>0?"Patient volume is trending upward over recent months.":"Patient volume is trending downward over recent months."]);
+  const rs=slope(recent.map(r=>r.revenue)); if(rs!=null)signals.push(["Revenue direction",rs>0?"Revenue trend is positive. Compare this with patient growth to assess whether gains come from volume or yield.":"Revenue is trending downward. Review patient volumes, pricing, payer mix and department contribution."]);
+  const ws=slope(recent.map(r=>r.waitingTime)); if(ws!=null)signals.push(["Waiting time",ws>0?"Waiting times are rising, which may indicate growing congestion or staffing/process constraints.":"Waiting times are stable or improving."]);
+  const ss=slope(recent.map(r=>r.satisfaction)); if(ss!=null)signals.push(["Patient experience",ss<0?"Patient satisfaction is deteriorating and should be reviewed alongside complaints and waiting time.":"Patient satisfaction is stable or improving."]);
+  const stock=slope(recent.map(r=>r.criticalAvailability)); if(stock!=null&&stock<0)signals.push(["Stock availability","Critical stock availability is trending downward. Review reorder points, supplier lead times and stock consumption."]);
+  const safety=slope(recent.map(r=>r.safetyEvents)); if(safety!=null&&safety>0)signals.push(["Clinical safety","The combined safety-event trend is increasing. Prioritize incident review and corrective action."]);
+  const col=recent.map(calcCollection);const cs=slope(col);if(cs!=null&&cs<0)signals.push(["Revenue collection","Collection efficiency is weakening. Review receivables ageing, insurer/corporate claims and cash collection controls."]);
+  trendInsights.innerHTML=signals.length?signals.map(s=>`<div class="insight"><b>${s[0]}</b><p>${s[1]}</p></div>`).join(""):`<div class="insight"><b>Build the time series</b><p>At least two to three completed monthly records are needed before meaningful trends can be interpreted. Six or more months will provide stronger management signals.</p></div>`;
+}
+
+
+
+function derivedMetric(d,key){
+  if(!d)return null;
+  if(key==="collectionRate") return calcCollection(d);
+  if(key==="complaintResolution") return valid(d.complaints)&&Number(d.complaints)>0&&valid(d.complaintsResolved)?Number(d.complaintsResolved)/Number(d.complaints)*100:null;
+  if(key==="noShowRate") return valid(d.appointments)&&Number(d.appointments)>0&&valid(d.noShows)?Number(d.noShows)/Number(d.appointments)*100:null;
+  if(key==="returns72Rate") return valid(d.patients)&&Number(d.patients)>0&&valid(d.returns72h)?Number(d.returns72h)/Number(d.patients)*100:null;
+  if(key==="documentationRate") return valid(d.recordsAudited)&&Number(d.recordsAudited)>0&&valid(d.recordsComplete)?Number(d.recordsComplete)/Number(d.recordsAudited)*100:null;
+  return valid(d[key])?Number(d[key]):null;
+}
+function kpiStatus(value,cfg){
+  if(value==null)return "grey";
+  if(cfg.direction==="high"){
+    if(value>=cfg.target)return "green";
+    if(value>=cfg.target-cfg.tolerance)return "amber";
+    return "red";
+  }else{
+    if(value<=cfg.target)return "green";
+    if(value<=cfg.target+cfg.tolerance)return "amber";
+    return "red";
+  }
+}
+function statusLabel(s){return s==="green"?"On target":s==="amber"?"Watch":s==="red"?"Action required":"No data"}
+function metricFormat(v,u){if(v==null)return "—";if(u==="%")return Number(v).toFixed(1)+"%";if(u==="min")return Number(v).toFixed(1)+" min";if(u==="items")return Number(v).toFixed(0);return nfmt(v)}
+function renderKpiHealth(d){
+  const keys=["satisfaction","waitingTime","collectionRate","criticalAvailability","equipmentUptime","auditCompliance","complaintResolution","noShowRate","stockouts","returns72Rate","followupRate","documentationRate"];
+  kpiHealthGrid.innerHTML=keys.map(k=>{
+    const cfg=targets[k],v=derivedMetric(d,k),s=kpiStatus(v,cfg);
+    const cmp=cfg.direction==="high"?"≥":"≤";
+    return `<div class="status-card ${s}">
+      <div class="status-head"><div class="status-title">${cfg.label}</div><span class="status-dot"></span></div>
+      <div class="status-value">${metricFormat(v,cfg.unit)}</div>
+      <div class="status-target">Target ${cmp} ${cfg.target}${cfg.unit==="%"?"%":cfg.unit==="min"?" min":cfg.unit==="items"?" items":""}</div>
+      <div class="status-text">${statusLabel(s)}</div>
+    </div>`;
+  }).join("");
+}
+function renderTargets(){
+  targetsBody.innerHTML=Object.entries(targets).map(([k,cfg])=>`
+    <tr data-key="${k}">
+      <td><b>${cfg.label}</b></td>
+      <td><select class="t-dir"><option value="high" ${cfg.direction==="high"?"selected":""}>Higher is better</option><option value="low" ${cfg.direction==="low"?"selected":""}>Lower is better</option></select></td>
+      <td><input class="t-target" type="number" step="0.1" value="${cfg.target}"></td>
+      <td><input class="t-tol" type="number" step="0.1" min="0" value="${cfg.tolerance}"></td>
+      <td>${cfg.unit}</td>
+    </tr>`).join("");
+}
+
+function saveDeptTargetsData(){localStorage.setItem(deptTargetKey,JSON.stringify(deptTargets))}
+function departmentMetrics(d,key){
+  if(!d)return {volume:null,revenue:null,rps:null};
+  const map={
+    doctor:[d.doctor,d.revConsult],
+    pharmacy:[d.pharmacy,d.revPharmacy],
+    lab:[d.lab,d.revLab],
+    nursing:[d.nursing,d.revNursing],
+    mch:[(Number(d.anc)||0)+(Number(d.pnc)||0)+(Number(d.cwc)||0)+(Number(d.fp)||0)+(Number(d.immunization)||0),d.revMch],
+    homecare:[d.homecare,d.revHomecare],
+    physiotherapy:[d.physiotherapy,d.revPhysio],
+    optical:[d.optical,d.revOptical],
+    radiology:[d.radiology,d.revRadiology]
+  };
+  const [volume,revenue]=map[key]||[null,null];
+  const rps=valid(volume)&&Number(volume)>0&&valid(revenue)?Number(revenue)/Number(volume):null;
+  return {volume:valid(volume)?Number(volume):null,revenue:valid(revenue)?Number(revenue):null,rps};
+}
+function deptStatus(value,target,tolerance){
+  if(value==null)return "grey";
+  if(value>=target)return "green";
+  if(value>=target*(1-tolerance/100))return "amber";
+  return "red";
+}
+function renderDeptTargets(){
+  departmentTargetGrid.innerHTML=Object.entries(deptTargets).map(([k,cfg])=>`
+    <div class="dept-target-box" data-key="${k}">
+      <h4>${cfg.label}</h4>
+      <div class="dept-target-row"><span>Service volume target</span><input class="dt-volume" type="number" min="0" value="${cfg.volume}"><span>visits</span></div>
+      <div class="dept-target-row"><span>Revenue target</span><input class="dt-revenue" type="number" min="0" value="${cfg.revenue}"><span>KES</span></div>
+      <div class="dept-target-row"><span>Revenue / service</span><input class="dt-rps" type="number" min="0" value="${cfg.rps}"><span>KES</span></div>
+      <div class="dept-target-row"><span>Amber tolerance</span><input class="dt-tol" type="number" min="0" max="100" value="${cfg.tolerance}"><span>%</span></div>
+    </div>`).join("");
+}
+function renderDepartmentTargetSummary(d){
+  if(!d)return "";
+  return Object.entries(deptTargets).map(([k,cfg])=>{
+    const m=departmentMetrics(d,k);
+    const sv=deptStatus(m.volume,cfg.volume,cfg.tolerance);
+    const sr=deptStatus(m.revenue,cfg.revenue,cfg.tolerance);
+    const sp=deptStatus(m.rps,cfg.rps,cfg.tolerance);
+    return `<div class="dept-target-box">
+      <h4>${cfg.label}</h4>
+      <div class="dept-kpi-summary">
+        <div class="dept-mini-status ${sv}"><b>Volume</b><span>${metricFormat(m.volume,"")} / ${nfmt(cfg.volume)}</span></div>
+        <div class="dept-mini-status ${sr}"><b>Revenue</b><span>${money(m.revenue)} / ${money(cfg.revenue)}</span></div>
+        <div class="dept-mini-status ${sp}"><b>Rev/service</b><span>${money(m.rps)} / ${money(cfg.rps)}</span></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function reportRecordData(){
+  if(!reportRecord.value)return null;
+  const [y,m]=reportRecord.value.split("-").map(Number);
+  return data.find(d=>d.year===y&&d.month===m);
+}
+function reportRows(d){
+  return [
+    ["OPD / Doctor",d.doctor,d.revConsult],
+    ["Pharmacy",d.pharmacy,d.revPharmacy],
+    ["Laboratory",d.lab,d.revLab],
+    ["Nursing",d.nursing,d.revNursing],
+    ["MCH",(Number(d.anc)||0)+(Number(d.pnc)||0)+(Number(d.cwc)||0)+(Number(d.fp)||0)+(Number(d.immunization)||0),d.revMch],
+    ["Home Care",d.homecare,d.revHomecare],
+    ["Physiotherapy",d.physiotherapy,d.revPhysio],
+    ["Optical",d.optical,d.revOptical],
+    ["Radiology",d.radiology,d.revRadiology]
+  ];
+}
+
+const deptMeta={
+ doctor:{label:"OPD / Doctor",icon:"🩺",soft:"#eaf3ff",color:"#2f80ed"},
+ pharmacy:{label:"Pharmacy",icon:"💊",soft:"#eef8f4",color:"#15916d"},
+ lab:{label:"Laboratory",icon:"🧪",soft:"#f3edff",color:"#7a4fc7"},
+ nursing:{label:"Nursing",icon:"✚",soft:"#fff2f6",color:"#c84f7a"},
+ mch:{label:"MCH",icon:"👶",soft:"#fff6e8",color:"#d9891b"},
+ homecare:{label:"Home Care",icon:"⌂",soft:"#edf8fb",color:"#2d8ea5"},
+ physiotherapy:{label:"Physiotherapy",icon:"♿",soft:"#eef7ff",color:"#2477b9"},
+ optical:{label:"Optical",icon:"◉",soft:"#f1f5ff",color:"#5368c7"},
+ radiology:{label:"Radiology",icon:"⊙",soft:"#eef3f7",color:"#526a7b"}
+};
+function saveDeptActions(){localStorage.setItem(deptActionKey,JSON.stringify(deptActions))}
+function scorecardKey(d,dept){return `${d.year}-${d.month}-${dept}`}
+function scorecardSelectedRecord(){
+  if(!scorecardRecord.value)return null;
+  const [y,m]=scorecardRecord.value.split("-").map(Number);
+  return data.find(d=>d.year===y&&d.month===m);
+}
+function deptTrendRows(dept){
+  return [...data].sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month)).map(d=>{
+    const m=departmentMetrics(d,dept);
+    return {...d,deptVolume:m.volume,deptRevenue:m.revenue,deptRps:m.rps};
+  });
+}
+function drawDeptTrend(id,rows){
+  multiLine(id,rows,[
+    {key:"deptVolume",label:"Service volume"},
+    {key:"deptRevenue",label:"Revenue"},
+    {key:"deptRps",label:"Revenue / service"}
+  ],{zeroBase:true});
+}
+function trendDirection(rows,key){
+  const vals=rows.slice(-6).map(r=>r[key]);
+  const s=slope(vals);
+  if(s==null)return {txt:"Insufficient trend data",cls:"neutral"};
+  if(s>0)return {txt:"Upward trend",cls:"good"};
+  if(s<0)return {txt:"Downward trend",cls:"bad"};
+  return {txt:"Stable trend",cls:"neutral"};
+}
+function statusTextFromDept(value,target,tol){
+  const s=deptStatus(value,target,tol);
+  return {s,label:statusLabel(s)};
+}
+function renderDeptScorecardsTab(){
+  const sorted=[...data].sort((a,b)=>(b.year*12+b.month)-(a.year*12+a.month));
+  const prevRec=scorecardRecord.value, prevDept=scorecardDepartment.value;
+  scorecardRecord.innerHTML=sorted.map(d=>`<option value="${d.year}-${d.month}">${monthNames[d.month-1]} ${d.year}</option>`).join("");
+  scorecardDepartment.innerHTML=Object.entries(deptMeta).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");
+  if(prevRec && [...scorecardRecord.options].some(o=>o.value===prevRec))scorecardRecord.value=prevRec;
+  if(prevDept && deptMeta[prevDept])scorecardDepartment.value=prevDept;
+  renderDepartmentScorecard();
+}
+function renderDepartmentScorecard(){
+  const d=scorecardSelectedRecord(),dept=scorecardDepartment.value;
+  if(!d||!dept){departmentScorecardSheet.innerHTML="<p>No data available.</p>";return}
+  const meta=deptMeta[dept],t=deptTargets[dept],m=departmentMetrics(d,dept);
+  const all=deptTrendRows(dept),selectedIndex=all.findIndex(r=>r.year===d.year&&r.month===d.month);
+  const through=all.slice(0,selectedIndex+1);
+  const prev=selectedIndex>0?all[selectedIndex-1]:null;
+  const volCh=prev&&valid(prev.deptVolume)&&prev.deptVolume!==0&&valid(m.volume)?change(m.volume,prev.deptVolume):null;
+  const revCh=prev&&valid(prev.deptRevenue)&&prev.deptRevenue!==0&&valid(m.revenue)?change(m.revenue,prev.deptRevenue):null;
+  const rpsCh=prev&&valid(prev.deptRps)&&prev.deptRps!==0&&valid(m.rps)?change(m.rps,prev.deptRps):null;
+  const sv=statusTextFromDept(m.volume,t.volume,t.tolerance);
+  const sr=statusTextFromDept(m.revenue,t.revenue,t.tolerance);
+  const sp=statusTextFromDept(m.rps,t.rps,t.tolerance);
+  const key=scorecardKey(d,dept);
+  const act=deptActions[key]||{action1:"",owner1:"",due1:"",status1:"Open",action2:"",owner2:"",due2:"",status2:"Open",action3:"",owner3:"",due3:"",status3:"Open"};
+  const volTrend=trendDirection(through,"deptVolume");
+  const revTrend=trendDirection(through,"deptRevenue");
+  const rpsTrend=trendDirection(through,"deptRps");
+
+  departmentScorecardSheet.style.setProperty("--dept-color",meta.color);
+  departmentScorecardSheet.style.setProperty("--dept-soft",meta.soft);
+  departmentScorecardSheet.innerHTML=`
+    <div class="dsc-head">
+      <div class="dsc-brand"><h3>ACCUCARE CLINIC & HOME-BASED NURSING</h3><p>Department Performance Scorecard</p></div>
+      <div class="dsc-meta"><b>${monthNames[d.month-1]} ${d.year}</b><br>${d.workflowStatus||"Draft"}<br>Generated ${new Date().toLocaleDateString()}</div>
+    </div>
+
+    <div class="dsc-title">
+      <div class="dsc-title-icon">${meta.icon}</div>
+      <div><h2>${meta.label}</h2><p>One-page management view: target achievement, trend direction and corrective actions</p></div>
+    </div>
+
+    <div class="dsc-kpis">
+      <div class="dsc-kpi"><div class="k">Service volume</div><div class="v">${metricFormat(m.volume,"")}</div><div class="t">Target ${nfmt(t.volume)} • ${volCh==null?"No prior comparison":`${volCh>=0?"+":""}${volCh.toFixed(1)}% MoM`}</div></div>
+      <div class="dsc-kpi"><div class="k">Department revenue</div><div class="v">${money(m.revenue)}</div><div class="t">Target ${money(t.revenue)} • ${revCh==null?"No prior comparison":`${revCh>=0?"+":""}${revCh.toFixed(1)}% MoM`}</div></div>
+      <div class="dsc-kpi"><div class="k">Revenue / service</div><div class="v">${money(m.rps)}</div><div class="t">Target ${money(t.rps)} • ${rpsCh==null?"No prior comparison":`${rpsCh>=0?"+":""}${rpsCh.toFixed(1)}% MoM`}</div></div>
+    </div>
+
+    <div class="dsc-status-grid">
+      <div class="dsc-status ${sv.s}"><b>Volume target</b><strong>${sv.label}</strong><span>${metricFormat(m.volume,"")} vs ${nfmt(t.volume)}</span></div>
+      <div class="dsc-status ${sr.s}"><b>Revenue target</b><strong>${sr.label}</strong><span>${money(m.revenue)} vs ${money(t.revenue)}</span></div>
+      <div class="dsc-status ${sp.s}"><b>Productivity target</b><strong>${sp.label}</strong><span>${money(m.rps)} vs ${money(t.rps)}</span></div>
+    </div>
+
+    <div class="dsc-body">
+      <div class="dsc-panel">
+        <h4>Six-Month Trend</h4>
+        <div class="sub">Service volume, revenue and revenue per service</div>
+        <canvas id="deptScoreTrend"></canvas>
+        <div class="dept-kpi-summary" style="margin-top:8px">
+          <div class="dept-mini-status ${volTrend.cls==="good"?"green":volTrend.cls==="bad"?"red":"grey"}"><b>Volume trend</b><span>${volTrend.txt}</span></div>
+          <div class="dept-mini-status ${revTrend.cls==="good"?"green":revTrend.cls==="bad"?"red":"grey"}"><b>Revenue trend</b><span>${revTrend.txt}</span></div>
+          <div class="dept-mini-status ${rpsTrend.cls==="good"?"green":rpsTrend.cls==="bad"?"red":"grey"}"><b>Productivity trend</b><span>${rpsTrend.txt}</span></div>
+        </div>
+      </div>
+
+      <div class="dsc-panel">
+        <h4>Management Interpretation</h4>
+        <div class="report-insight">${sv.s==="red"?"Service volume is materially below target and requires review of demand, referral flow, staffing, scheduling or service availability.":sv.s==="amber"?"Service volume is close to target but should be monitored for corrective action.":"Service volume is meeting the configured target."}</div>
+        <div class="report-insight">${sr.s==="red"?"Department revenue is below target. Review service mix, pricing, billing completeness, payer mix and conversion of activity to revenue.":sr.s==="amber"?"Revenue is near target but not yet at the desired level.":"Department revenue is meeting the configured target."}</div>
+        <div class="report-insight">${sp.s==="red"?"Revenue per service is below target, suggesting a need to review pricing, service mix, discounts or charge capture.":sp.s==="amber"?"Revenue per service is within the watch range.":"Revenue per service is meeting the configured productivity target."}</div>
+      </div>
+    </div>
+
+    <div class="dsc-panel" style="margin-top:14px">
+      <h4>Management Action Tracker</h4>
+      <table class="action-table">
+        <thead><tr><th>Priority action</th><th>Owner</th><th>Due date</th><th>Status</th></tr></thead>
+        <tbody>
+          ${[1,2,3].map(i=>`<tr>
+            <td><textarea data-a="action${i}" placeholder="Enter management action...">${act["action"+i]||""}</textarea></td>
+            <td><input data-a="owner${i}" value="${act["owner"+i]||""}" placeholder="Owner"></td>
+            <td><input data-a="due${i}" type="date" value="${act["due"+i]||""}"></td>
+            <td><select data-a="status${i}"><option ${act["status"+i]==="Open"?"selected":""}>Open</option><option ${act["status"+i]==="In Progress"?"selected":""}>In Progress</option><option ${act["status"+i]==="Completed"?"selected":""}>Completed</option><option ${act["status"+i]==="Deferred"?"selected":""}>Deferred</option></select></td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dsc-footer">
+      <span>Accucare Performance Intelligence • Internal Management Use</span>
+      <span>${meta.label} • ${monthNames[d.month-1]} ${d.year}</span>
+    </div>`;
+  setTimeout(()=>drawDeptTrend("deptScoreTrend",through.slice(-6)),20);
+}
+function captureScorecardActions(){
+  const d=scorecardSelectedRecord(),dept=scorecardDepartment.value;if(!d||!dept)return;
+  const key=scorecardKey(d,dept),obj={};
+  departmentScorecardSheet.querySelectorAll("[data-a]").forEach(el=>obj[el.dataset.a]=el.value);
+  deptActions[key]=obj;saveDeptActions();showToast("Department actions saved");
+}
+
+function renderReportTab(){
+  const sorted=[...data].sort((a,b)=>(b.year*12+b.month)-(a.year*12+a.month));
+  const prev=reportRecord.value;
+  reportRecord.innerHTML=sorted.map(d=>`<option value="${d.year}-${d.month}">${monthNames[d.month-1]} ${d.year}</option>`).join("");
+  if(prev && [...reportRecord.options].some(o=>o.value===prev))reportRecord.value=prev;
+  renderMonthlyReport();
+}
+function renderMonthlyReport(){
+  const d=reportRecordData();
+  if(!d){reportSheet.innerHTML="<p>No monthly record available.</p>";return}
+  const all=[...data].sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month));
+  const idx=all.findIndex(x=>x.year===d.year&&x.month===d.month),p=idx>0?all[idx-1]:null;
+  const patientChange=p?change(d.patients,p.patients):null;
+  const revenueChange=p?change(d.revenue,p.revenue):null;
+  const collection=calcCollection(d);
+  const complaintsResolution=derivedMetric(d,"complaintResolution");
+  const rows=reportRows(d);
+  const depTable=rows.map(r=>`<tr><td>${r[0]}</td><td>${nfmt(r[1])}</td><td>${money(r[2])}</td><td>${r[1]&&r[2]!=null?money(r[2]/r[1]):"—"}</td></tr>`).join("");
+  const insightArr=[];
+  if(patientChange!=null)insightArr.push(`Patient attendance ${patientChange>=0?"increased":"decreased"} by ${Math.abs(patientChange).toFixed(1)}% compared with the previous recorded month.`);
+  if(revenueChange!=null)insightArr.push(`Billed revenue ${revenueChange>=0?"increased":"decreased"} by ${Math.abs(revenueChange).toFixed(1)}% month-on-month.`);
+  if(valid(d.waitingTime))insightArr.push(`Average waiting time was ${Number(d.waitingTime).toFixed(1)} minutes against a management target of ${targets.waitingTime.target} minutes.`);
+  if(valid(d.satisfaction))insightArr.push(`Patient satisfaction was ${Number(d.satisfaction).toFixed(1)}%, compared with the ${targets.satisfaction.target}% target.`);
+  if(collection!=null)insightArr.push(`Revenue collection rate was ${collection.toFixed(1)}%.`);
+  if(valid(d.stockouts)&&Number(d.stockouts)>0)insightArr.push(`${nfmt(d.stockouts)} pharmacy stock-out item(s) were recorded.`);
+  if(!insightArr.length)insightArr.push("Additional monthly data will strengthen automated management interpretation.");
+
+  reportSheet.innerHTML=`
+    <div class="report-head">
+      <div class="report-brand"><h3>ACCUCARE CLINIC & HOME-BASED NURSING</h3><p>Monthly Performance Management Report</p></div>
+      <div class="report-meta"><b>${monthNames[d.month-1]} ${d.year}</b><br>Workflow status: ${d.workflowStatus||"Draft"}</div>
+    </div>
+
+    <div class="report-section">
+      <h4>Executive Performance Snapshot</h4>
+      <div class="report-grid">
+        <div class="report-metric"><b>Total patients</b><strong>${nfmt(d.patients)}</strong></div>
+        <div class="report-metric"><b>Total revenue</b><strong>${money(d.revenue)}</strong></div>
+        <div class="report-metric"><b>Collection rate</b><strong>${collection==null?"—":collection.toFixed(1)+"%"}</strong></div>
+        <div class="report-metric"><b>Patient satisfaction</b><strong>${valid(d.satisfaction)?Number(d.satisfaction).toFixed(1)+"%":"—"}</strong></div>
+        <div class="report-metric"><b>Average wait</b><strong>${valid(d.waitingTime)?Number(d.waitingTime).toFixed(1)+" min":"—"}</strong></div>
+        <div class="report-metric"><b>Operating expenses</b><strong>${money(d.expenses)}</strong></div>
+        <div class="report-metric"><b>Outstanding receivables</b><strong>${money(d.receivables)}</strong></div>
+        <div class="report-metric"><b>Complaint resolution</b><strong>${complaintsResolution==null?"—":complaintsResolution.toFixed(1)+"%"}</strong></div>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h4>Department Performance</h4>
+      <table class="report-table"><thead><tr><th>Department</th><th>Activity</th><th>Revenue</th><th>Revenue / Service</th></tr></thead><tbody>${depTable}</tbody></table>
+    </div>
+
+    <div class="report-section">
+      <h4>Quality, Safety & Operations</h4>
+      <div class="report-grid">
+        <div class="report-metric"><b>Adverse events</b><strong>${nfmt(d.adverseEvents)}</strong></div>
+        <div class="report-metric"><b>Medication errors</b><strong>${nfmt(d.medErrors)}</strong></div>
+        <div class="report-metric"><b>72h returns</b><strong>${nfmt(d.returns72h)}</strong></div>
+        <div class="report-metric"><b>IPC incidents</b><strong>${nfmt(d.infectionIncidents)}</strong></div>
+        <div class="report-metric"><b>Critical stock availability</b><strong>${valid(d.criticalAvailability)?Number(d.criticalAvailability).toFixed(1)+"%":"—"}</strong></div>
+        <div class="report-metric"><b>Equipment operational</b><strong>${valid(d.equipmentUptime)?Number(d.equipmentUptime).toFixed(1)+"%":"—"}</strong></div>
+        <div class="report-metric"><b>Clinic downtime</b><strong>${valid(d.clinicDowntime)?Number(d.clinicDowntime).toFixed(1)+" h":"—"}</strong></div>
+        <div class="report-metric"><b>Staff absent days</b><strong>${nfmt(d.staffAbsenceDays)}</strong></div>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h4>Management Interpretation</h4>
+      ${insightArr.map(t=>`<div class="report-insight">${t}</div>`).join("")}
+    </div>
+
+    <div class="report-section">
+      <h4>Management Notes</h4>
+      <div class="report-insight">${d.notes?d.notes:"No management note entered for this reporting period."}</div>
+    </div>
+
+    <div class="report-footer">
+      <span>Generated from Accucare Performance Intelligence</span>
+      <span>${new Date().toLocaleDateString()}</span>
+    </div>`;
+}
+
+function renderWorkflow(){
+  roleSelect.value=currentSession?.role||localStorage.getItem(roleKey)||"Administrator"; roleSelect.disabled=!isManagementSession();
+  const sorted=[...data].sort((a,b)=>(b.year*12+b.month)-(a.year*12+a.month));
+  approvalRecord.innerHTML=sorted.map(d=>`<option value="${d.year}-${d.month}">${monthNames[d.month-1]} ${d.year}</option>`).join("");
+  refreshApprovalPanel();
+  renderAudit();
+}
+function currentApprovalRecord(){
+  if(!approvalRecord.value)return null;
+  const [y,m]=approvalRecord.value.split("-").map(Number);
+  return data.find(d=>d.year===y&&d.month===m);
+}
+function refreshApprovalPanel(){
+  const d=currentApprovalRecord();if(!d){approvalStatusWrap.innerHTML="—";return}
+  const cls=(d.workflowStatus||"Draft").toLowerCase().replaceAll(" ","");
+  approvalStatusWrap.innerHTML=`<span class="workflow-badge ${cls==="returnedforcorrection"?"rejected":cls}">${d.workflowStatus||"Draft"}</span>`;
+  approvalComment.value=d.workflowComment||"";
+}
+function renderAudit(){
+  auditList.innerHTML=audit.length?audit.slice(0,30).map(a=>`<div class="audit-item"><b>${a.action}</b> • ${a.record} • ${a.role}<br><span>${new Date(a.ts).toLocaleString()}</span>${a.comment?`<br>${a.comment}`:""}</div>`).join(""):`<div class="audit-item">No workflow activity recorded yet.</div>`;
+}
+function applyWorkflow(status,action){
+  const d=currentApprovalRecord();if(!d)return;
+  const role=roleSelect.value;
+  if(status==="Approved" && !["Administrator","Manager"].includes(role)){alert("Only Administrator or Manager can approve records.");return}
+  if(status==="Submitted" && role==="Viewer"){alert("Viewer role cannot submit records.");return}
+  d.workflowStatus=status;d.workflowComment=approvalComment.value.trim();d.workflowUpdatedAt=new Date().toISOString();d.workflowRole=role;
+  save();addAudit(action,`${monthNames[d.month-1]} ${d.year}`,d.workflowComment);refreshApprovalPanel();renderAudit();showToast(action);
+}
+
+function renderDashboard(){
+ const d=latest(),p=previousOf(d);periodPill.textContent=`Reporting period: ${monthNames[d.month-1]} ${d.year}`;
+ kpiPatients.textContent=nfmt(d.patients);kpiRevenue.textContent=money(d.revenue);kpiRpp.textContent=(d.revenue&&d.patients)?money(d.revenue/d.patients):"—";kpiSat.textContent=pct(d.satisfaction);
+ sDoctor.textContent=nfmt(d.doctor);sLab.textContent=nfmt(d.lab);sPharmacy.textContent=nfmt(d.pharmacy);sNursing.textContent=nfmt(d.nursing);
+ setDelta("dPatients",d.patients,p,"patients");setDelta("dRevenue",d.revenue,p,"revenue");
+ const sorted=[...data].sort((a,b)=>(a.year*12+a.month)-(b.year*12+b.month));line("trendChart",sorted.filter(x=>x.patients!=null).map(x=>({label:monthNames[x.month-1].slice(0,3)+" "+String(x.year).slice(-2),v:x.patients})));
+ bar("deptChart",["Doctor","Pharmacy","Nursing","Lab","MCH","Home","Physio","Optical","Radiology"],[d.doctor,d.pharmacy,d.nursing,d.lab,(d.anc||0)+(d.pnc||0)+(d.cwc||0)+(d.fp||0)+(d.immunization||0),d.homecare,d.physiotherapy,d.optical,d.radiology]);
+ bar("financeChart",["Revenue","Collected","Expenses","Receivables"],[d.revenue,d.cashCollected,d.expenses,d.receivables],v=>v>=1000?Math.round(v/1000)+"k":Math.round(v));
+ qualityScores.innerHTML=[
+  ["Satisfaction",pct(d.satisfaction)],
+  ["Avg wait",d.waitingTime==null?"—":d.waitingTime+" min"],
+  ["Complaint resolution",(d.complaints&&d.complaintsResolved!=null)?pct(d.complaintsResolved/d.complaints*100):"—"],
+  ["Audit compliance",pct(d.auditCompliance)]
+ ].map(x=>`<div class="score"><b>${x[0]}</b><div class="big">${x[1]}</div></div>`).join("");
+ opsScores.innerHTML=[
+  ["Critical stock availability",pct(d.criticalAvailability)],
+  ["Equipment uptime",pct(d.equipmentUptime)],
+  ["Days operational",d.daysOperational==null?"—":d.daysOperational],
+  ["Clinic downtime",d.clinicDowntime==null?"—":d.clinicDowntime+" hrs"]
+ ].map(x=>`<div class="score"><b>${x[0]}</b><div class="big">${x[1]}</div></div>`).join("");
+ renderInsights(d,p);renderKpiHealth(d)
+}
+function renderInsights(d,p){
+ let a=[];
+ if(p&&d.patients!=null&&p.patients!=null){let v=change(d.patients,p.patients);a.push(["Patient volume",`Attendance ${v<0?"declined":"increased"} by ${Math.abs(v).toFixed(1)}% compared with ${monthNames[p.month-1]}.`])}
+ if(d.revenue&&d.patients)a.push(["Revenue productivity",`Average billed revenue per patient is ${money(d.revenue/d.patients)}.`]);
+ if(d.waitingTime!=null)a.push(["Waiting time",`${d.waitingTime} minutes average waiting time.${d.waitingTime>30?" This warrants workflow review.":""}`]);
+ if(d.stockouts!=null)a.push(["Pharmacy availability",`${d.stockouts} stock-out item(s) recorded.${d.stockouts>0?" Review reorder levels and supplier lead times.":""}`]);
+ if(d.satisfaction!=null)a.push(["Patient experience",`Satisfaction is ${pct(d.satisfaction)}.${d.satisfaction<90?" Below a 90% management benchmark.":""}`]);
+ if(d.complaints&&d.complaintsResolved!=null)a.push(["Complaints",`${d.complaintsResolved} of ${d.complaints} complaints were resolved (${(d.complaintsResolved/d.complaints*100).toFixed(1)}%).`]);
+ if(d.adverseEvents>0||d.medErrors>0||d.infectionIncidents>0)a.push(["Quality & safety",`Safety events require review: adverse events ${d.adverseEvents||0}, medication errors ${d.medErrors||0}, infection-control incidents ${d.infectionIncidents||0}.`]);
+ if(d.cashCollected!=null&&d.revenue)a.push(["Revenue collection",`Collection rate is ${(d.cashCollected/d.revenue*100).toFixed(1)}% of billed revenue.`]);
+ insights.innerHTML=a.length?a.map(x=>`<div class="insight"><b>${x[0]}</b><p>${x[1]}</p></div>`).join(""):`<div class="insight"><b>More data needed</b><p>Enter finance, quality and operational indicators to unlock richer management insights.</p></div>`
+}
+function renderDepartment(){
+ const d=latest();bar("deptDetailChart",["Doctor","Pharmacy","Nursing","Lab","Home","Physio","Optical","Radiology"],[d.doctor,d.pharmacy,d.nursing,d.lab,d.homecare,d.physiotherapy,d.optical,d.radiology]);
+ bar("revDeptChart",["Consult","Pharmacy","Lab","Nursing","MCH","Home","Physio","Optical","Radiology"],[d.revConsult,d.revPharmacy,d.revLab,d.revNursing,d.revMch,d.revHomecare,d.revPhysio,d.revOptical,d.revRadiology],v=>v>=1000?Math.round(v/1000)+"k":Math.round(v));
+ const rows=[
+  ["Doctor / OPD",d.doctor,d.revConsult],
+  ["Pharmacy",d.pharmacy,d.revPharmacy],
+  ["Laboratory",d.lab,d.revLab],
+  ["Nursing",d.nursing,d.revNursing],
+  ["MCH",(d.anc||0)+(d.pnc||0)+(d.cwc||0)+(d.fp||0)+(d.immunization||0),d.revMch],
+  ["Home care",d.homecare,d.revHomecare],
+  ["Physiotherapy",d.physiotherapy,d.revPhysio],
+  ["Optical",d.optical,d.revOptical],
+  ["Radiology",d.radiology,d.revRadiology]
+ ];
+ const cardHtml=(vol,rev)=>`
+   <div class="score-grid" style="grid-template-columns:1fr 1fr;margin-top:0">
+     <div class="score"><b>Service volume</b><div class="big">${nfmt(vol)}</div></div>
+     <div class="score"><b>Revenue</b><div class="big" style="font-size:18px">${money(rev)}</div></div>
+   </div>
+   <div class="note">Revenue / service: ${vol&&rev!=null?money(rev/vol):"—"}${d.revenue&&rev!=null?` • Revenue share: ${pct(rev/d.revenue*100)}`:""}</div>`;
+ deptOpdCard.innerHTML=cardHtml(d.doctor,d.revConsult);
+ deptPharmacyCard.innerHTML=cardHtml(d.pharmacy,d.revPharmacy);
+ deptLabCard.innerHTML=cardHtml(d.lab,d.revLab);
+ deptNursingCard.innerHTML=cardHtml(d.nursing,d.revNursing);
+ const mchVol=(d.anc||0)+(d.pnc||0)+(d.cwc||0)+(d.fp||0)+(d.immunization||0);
+ deptMchCard.innerHTML=cardHtml(mchVol,d.revMch);
+ deptHomeCard.innerHTML=cardHtml(d.homecare,d.revHomecare);
+ deptPhysioCard.innerHTML=cardHtml(d.physiotherapy,d.revPhysio);
+ deptOpticalCard.innerHTML=cardHtml(d.optical,d.revOptical);
+ deptRadiologyCard.innerHTML=cardHtml(d.radiology,d.revRadiology);
+
+ departmentTargetSummary.innerHTML=renderDepartmentTargetSummary(d);
+ departmentTableWrap.innerHTML=`<table><thead><tr><th>Department</th><th>Service volume</th><th>Revenue</th><th>Revenue / service</th><th>Share of total revenue</th></tr></thead><tbody>`+
+ rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${nfmt(r[1])}</td><td>${money(r[2])}</td><td>${r[1]&&r[2]!=null?money(r[2]/r[1]):"—"}</td><td>${d.revenue&&r[2]!=null?pct(r[2]/d.revenue*100):"—"}</td></tr>`).join("")+`</tbody></table>`
+}
+function renderRecords(){
+ const s=[...data].sort((a,b)=>(b.year*12+b.month)-(a.year*12+a.month));
+ recordsBody.innerHTML=s.map(d=>`<tr><td><span class="badge">${monthNames[d.month-1]} ${d.year}</span></td><td>${nfmt(d.patients)}</td><td>${money(d.revenue)}</td><td>${money(d.expenses)}</td><td>${pct(d.satisfaction)}</td><td>${d.waitingTime==null?"—":d.waitingTime+" min"}</td><td>${nfmt(d.lab)}</td><td>${nfmt(d.pharmacy)}</td><td>${nfmt(d.doctor)}</td><td>${nfmt(d.nursing)}</td><td>${d.dataSource||"Manual entry"}</td><td><span class="workflow-badge ${(d.workflowStatus||"Draft").toLowerCase()==="approved"?"approved":(d.workflowStatus||"Draft").toLowerCase()==="submitted"?"submitted":(d.workflowStatus||"Draft").toLowerCase().includes("returned")?"rejected":"draft"}">${d.workflowStatus||"Draft"}</span></td><td>${isManagementSession()?`<button class="btn secondary" style="padding:5px 7px" onclick="removeEntry(${d.year},${d.month})">Delete</button>`:"—"}</td></tr>`).join("")
+}
+window.removeEntry=(y,m)=>{if(!isManagementSession()){alert("Only Administrator or Manager can delete monthly records.");return}if(confirm("Delete this monthly record?")){data=data.filter(x=>!(x.year===y&&x.month===m));save();renderRecords();showToast("Record deleted")}}
+entryForm.onsubmit=e=>{
+ e.preventDefault();const o={};document.querySelectorAll("#entryForm input,#entryForm select,#entryForm textarea").forEach(el=>{o[el.id]=el.tagName==="TEXTAREA"?el.value.trim():(el.value===""?null:Number(el.value))});
+ if(o.newVisits!=null&&o.revisits!=null&&o.patients!=null&&o.newVisits+o.revisits!==o.patients){if(!confirm("Total patients does not equal new visits + revisits. Save anyway?"))return}
+ const i=data.findIndex(x=>x.year===o.year&&x.month===o.month);
+ const mgmt=isManagementSession();
+ const dept=currentSession?.department||"all";
+ const deptFields={
+   doctor:["patients","newVisits","revisits","appointments","noShows","referralsOut","doctor","procedures","revConsult"],
+   pharmacy:["pharmacy","otc","rxDispensed","stockouts","expiredStock","inventoryVariance","criticalAvailability","revPharmacy"],
+   lab:["lab","labWalkin","labClinician","revLab"],
+   nursing:["nursing","nursingProcedures","doctorProcedures","revNursing"],
+   mch:["anc","pnc","cwc","fp","immunization","ultrasound","revMch"],
+   homecare:["homecare","revHomecare"],
+   physiotherapy:["physiotherapy","physioAssessments","physioSessions","revPhysio"],
+   optical:["optical","opticalExams","opticalOrders","revOptical"],
+   radiology:["radiology","xray","radiologyUltrasound","imagingReferrals","radiologyReports","revRadiology"]
+ };
+ if(i>=0){
+   const prior=data[i];
+   o.workflowStatus=prior.workflowStatus||"Draft";
+   o.workflowComment=prior.workflowComment||"";
+   if(mgmt){
+     data[i]={...prior,...o,workflowStatus:prior.workflowStatus||"Draft",workflowComment:prior.workflowComment||""};
+   }else{
+     const merged={...prior,year:o.year,month:o.month,notes:o.notes||prior.notes};
+     (deptFields[dept]||[]).forEach(k=>merged[k]=o[k]);
+     data[i]=merged;
+   }
+ }else{
+   o.workflowStatus="Draft";
+   if(!mgmt){
+     const scoped={year:o.year,month:o.month,workflowStatus:"Draft",notes:o.notes||""};
+     (deptFields[dept]||[]).forEach(k=>scoped[k]=o[k]);
+     data.push(scoped);
+   }else data.push(o);
+ }
+ save();
+ addAudit(`${departmentLabel(dept)} monthly entry saved`,`${monthNames[o.month-1]} ${o.year}`);
+ showToast(`${departmentLabel(dept)} entry saved`);document.querySelector('[data-tab="dashboard"]').click()
+}
+function download(name,text,type){
+ const url=URL.createObjectURL(new Blob([text],{type}));
+ const a=document.createElement("a");a.href=url;a.download=name;a.style.display="none";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)
+}
+function csvEscape(v){return `"${String(v??"").replaceAll('"','""')}"`}
+function safeFilePart(v){return String(v||"report").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-+|-+$/g,"").toLowerCase()}
+function printSection(mode){
+ document.body.classList.remove("print-report","print-scorecard");
+ document.body.classList.add(mode==="scorecard"?"print-scorecard":"print-report");
+ const cleanup=()=>document.body.classList.remove("print-report","print-scorecard");
+ window.addEventListener("afterprint",cleanup,{once:true});
+ setTimeout(()=>{window.print();setTimeout(cleanup,1200)},60)
+}
+function standaloneHtml(title,bodyHtml){
+ return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>body{font-family:Arial,sans-serif;color:#222;margin:24px}.report-sheet,.dept-scorecard-sheet{max-width:1000px;margin:auto}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}.report-grid,.dsc-kpis,.dsc-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.report-metric,.dsc-kpi,.dsc-status,.report-insight,.dsc-panel{border:1px solid #ddd;border-radius:8px;padding:10px;margin:6px 0}.report-head,.dsc-head,.report-footer,.dsc-footer{display:flex;justify-content:space-between;gap:16px}.sub{color:#666;font-size:12px}@media print{@page{size:A4 portrait;margin:10mm}}</style></head><body>${bodyHtml}</body></html>`
+}
+exportJson.onclick=()=>download("accucare-performance-backup.json",JSON.stringify(data,null,2),"application/json");
+const goReportBtn=document.getElementById("goReport");
+if(goReportBtn)goReportBtn.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  document.querySelector('nav button[data-tab="reports"]').classList.add("active");
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  reports.classList.add("active");renderReportTab();
+};
+exportCsv.onclick=()=>{
+ const keys=[...new Set(data.flatMap(Object.keys))];const esc=v=>`"${String(v??"").replaceAll('"','""')}"`;download("accucare-performance-data.csv",[keys.join(","),...data.map(d=>keys.map(k=>esc(d[k])).join(","))].join("\n"),"text/csv")
+}
+function showToast(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1700)}
+
+
+
+const openDeptScorecardsBtn=document.getElementById("openDeptScorecards");
+if(openDeptScorecardsBtn)openDeptScorecardsBtn.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  document.querySelector('nav button[data-tab="deptscorecards"]').classList.add("active");
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  deptscorecards.classList.add("active");renderDeptScorecardsTab();
+};
+
+saveCmsConfig.onclick=()=>{collectCmsConfig();configureCmsTimer();showToast("CMS configuration saved")};
+saveCmsMapping.onclick=()=>{collectCmsMapping();showToast("CMS field mapping saved")};
+testCmsConnection.onclick=()=>doCmsSync(true);
+syncCmsNow.onclick=()=>doCmsSync(false);
+
+scorecardRecord.onchange=renderDepartmentScorecard;
+scorecardDepartment.onchange=renderDepartmentScorecard;
+refreshScorecard.onclick=renderDepartmentScorecard;
+saveScorecardActions.onclick=captureScorecardActions;
+printScorecard.onclick=()=>{captureScorecardActions();printSection("scorecard");};
+exportScorecardHtml.onclick=()=>{
+ captureScorecardActions();const d=scorecardSelectedRecord(),dept=scorecardDepartment.value;if(!d||!dept)return;
+ const title=`Accucare ${departmentLabel(dept)} Scorecard - ${monthNames[d.month-1]} ${d.year}`;
+ download(`${safeFilePart(title)}.html`,standaloneHtml(title,departmentScorecardSheet.outerHTML),"text/html;charset=utf-8")
+};
+
+saveDeptTargets.onclick=()=>{
+  document.querySelectorAll("#departmentTargetGrid .dept-target-box").forEach(box=>{
+    const k=box.dataset.key,cfg=deptTargets[k];
+    cfg.volume=Math.max(0,Number(box.querySelector(".dt-volume").value)||0);
+    cfg.revenue=Math.max(0,Number(box.querySelector(".dt-revenue").value)||0);
+    cfg.rps=Math.max(0,Number(box.querySelector(".dt-rps").value)||0);
+    cfg.tolerance=Math.max(0,Math.min(100,Number(box.querySelector(".dt-tol").value)||0));
+  });
+  saveDeptTargetsData();showToast("Department targets saved");
+};
+resetDeptTargets.onclick=()=>{
+  if(confirm("Reset department targets to defaults?")){
+    deptTargets=JSON.parse(JSON.stringify(defaultDeptTargets));
+    saveDeptTargetsData();renderDeptTargets();showToast("Department targets reset");
+  }
+};
+refreshReport.onclick=renderMonthlyReport;
+reportRecord.onchange=renderMonthlyReport;
+printReport.onclick=()=>printSection("report");
+exportReportCsv.onclick=()=>{
+ const d=reportRecordData();if(!d){alert("No monthly record available to export.");return}
+ const rows=[["Section","Indicator","Value"],
+   ["Executive","Reporting period",`${monthNames[d.month-1]} ${d.year}`],
+   ["Executive","Workflow status",d.workflowStatus||"Draft"],
+   ["Executive","Total patients",d.patients],
+   ["Executive","Total revenue",d.revenue],
+   ["Executive","Cash collected",d.cashCollected],
+   ["Executive","Operating expenses",d.expenses],
+   ["Executive","Outstanding receivables",d.receivables],
+   ["Executive","Patient satisfaction",d.satisfaction],
+   ["Executive","Average waiting time",d.waitingTime]];
+ reportRows(d).forEach(r=>{rows.push(["Department",`${r[0]} activity`,r[1]]);rows.push(["Department",`${r[0]} revenue`,r[2]])});
+ rows.push(["Management","Notes",d.notes||""]);
+ const csv="\ufeff"+rows.map(r=>r.map(csvEscape).join(",")).join("\r\n");
+ download(`accucare-monthly-report-${d.year}-${String(d.month).padStart(2,"0")}.csv`,csv,"text/csv;charset=utf-8")
+};
+exportReportHtml.onclick=()=>{
+ const d=reportRecordData();if(!d){alert("No monthly record available to export.");return}
+ const title=`Accucare Monthly Performance Report - ${monthNames[d.month-1]} ${d.year}`;
+ download(`accucare-monthly-report-${d.year}-${String(d.month).padStart(2,"0")}.html`,standaloneHtml(title,reportSheet.outerHTML),"text/html;charset=utf-8")
+};
+
+saveTargets.onclick=()=>{
+  document.querySelectorAll("#targetsBody tr").forEach(tr=>{
+    const k=tr.dataset.key,c=targets[k];
+    c.direction=tr.querySelector(".t-dir").value;
+    c.target=Number(tr.querySelector(".t-target").value);
+    c.tolerance=Math.max(0,Number(tr.querySelector(".t-tol").value));
+  });
+  saveTargetsData();showToast("KPI targets saved");
+};
+resetTargets.onclick=()=>{if(confirm("Reset KPI targets to defaults?")){targets=JSON.parse(JSON.stringify(defaultTargets));saveTargetsData();renderTargets();showToast("Targets reset")}};
+roleSelect.onchange=()=>{localStorage.setItem(roleKey,roleSelect.value);renderWorkflow()};
+approvalRecord.onchange=refreshApprovalPanel;
+markDraft.onclick=()=>applyWorkflow("Draft","Record saved as Draft");
+submitRecord.onclick=()=>applyWorkflow("Submitted","Record submitted for review");
+approveRecord.onclick=()=>applyWorkflow("Approved","Record approved");
+returnRecord.onclick=()=>applyWorkflow("Returned for Correction","Record returned for correction");
+
+window.addEventListener("resize",()=>{if(dashboard.classList.contains("active"))renderDashboard();if(department.classList.contains("active"))renderDepartment();if(trends.classList.contains("active"))renderTrends()});
+renderDashboard();
+
+loginRole.onchange=()=>{
+  const management=["Administrator","Manager"].includes(loginRole.value);
+  const allOpt=[...loginDepartment.options].find(o=>o.value==="all");
+  if(allOpt) allOpt.disabled=!management;
+  if(management) loginDepartment.value="all";
+  else if(loginDepartment.value==="all") loginDepartment.value="pharmacy";
+};
+
+</script>
+</body>
+</html>
